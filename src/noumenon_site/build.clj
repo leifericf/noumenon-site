@@ -14,6 +14,7 @@
             [noumenon-site.content.concepts.pipeline :as c-pipeline]
             [noumenon-site.content.concepts.introspect :as c-introspect]
             [noumenon-site.content.concepts.benchmarks :as c-benchmarks]
+            [noumenon-site.content.concepts.source-control :as c-source-control]
             [noumenon-site.content.reference :as reference]
             [noumenon-site.content.queries :as queries]
             [noumenon-site.content.api :as api]
@@ -63,6 +64,10 @@
    "/concepts/benchmarks/index.html"
    (render-page {:title "Benchmarks" :active-page :concepts}
                 c-benchmarks/page)
+
+   "/concepts/source-control/index.html"
+   (render-page {:title "Source control" :active-page :concepts}
+                c-source-control/page)
 
    "/reference/index.html"
    (render-page {:title "Reference" :active-page :reference}

@@ -104,6 +104,7 @@
     :links [{:href "/concepts/"                     :label "Concepts"}
             {:href "/concepts/knowledge-graph/"     :label "Knowledge graph"}
             {:href "/concepts/pipeline/"            :label "Pipeline"}
+            {:href "/concepts/source-control/"      :label "Source control"}
             {:href "/concepts/introspect/"          :label "Introspect"}
             {:href "/concepts/benchmarks/"          :label "Benchmarks"}]}
    {:heading "Reference"
@@ -177,9 +178,10 @@
      :subtitle — secondary line
      :note     — small badge (e.g. 'deterministic', 'micro / LLM')
      :note-class — :macro | :autonomous (color override)
-     :tip      — tooltip body shown on hover (data-tip attr)"
+     :tip      — tooltip body shown on hover (omitted when nil/blank)"
   [{:keys [title subtitle note note-class tip]}]
-  [:div.pipeline-step {:data-tip tip}
+  [:div.pipeline-step
+   (when (and tip (seq tip)) {:data-tip tip})
    [:strong title]
    [:span subtitle]
    [:span {:class (cond-> "step-note" note-class (str " " (name note-class)))} note]])
