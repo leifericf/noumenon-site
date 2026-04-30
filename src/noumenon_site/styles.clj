@@ -294,7 +294,11 @@
                      :gap                  "1.5rem"}]
    [:.problem-grid {:display              "grid"
                     :grid-template-columns "repeat(auto-fit, minmax(280px, 1fr))"
-                    :gap                  "1.5rem"}]])
+                    :gap                  "1.5rem"}]
+   ;; Inside the narrower .prose column, drop the per-card min so 3
+   ;; cards fit on one row on desktop and collapse cleanly on mobile.
+   [:.prose [:.layers-grid {:grid-template-columns "repeat(auto-fit, minmax(220px, 1fr))"
+                            :gap                   "1rem"}]]])
 
 ;; --- Pipeline ---
 
