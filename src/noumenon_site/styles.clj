@@ -564,9 +564,23 @@
                      :background  "transparent"
                      :padding     0}]]])
 
-(def scalar-css
-  [[:.scalar-frame {:min-height "70vh"
-                    :margin     "1.5rem 0 0"}]])
+(def http-method
+  [[:.http-method {:display       "inline-block"
+                   :font-family   font-mono
+                   :font-size     "0.7rem"
+                   :font-weight   700
+                   :letter-spacing "0.05em"
+                   :padding       "0.15rem 0.45rem"
+                   :border-radius "4px"
+                   :min-width     "3.5rem"
+                   :text-align    "center"
+                   :color         (:text colors)
+                   :background    (:bg-alt colors)}]
+   [:.http-get    {:color "#3fb950" :background "rgba(63,185,80,0.12)"}]
+   [:.http-post   {:color "#58a6ff" :background "rgba(88,166,255,0.12)"}]
+   [:.http-put    {:color "#f0c674" :background "rgba(240,198,116,0.12)"}]
+   [:.http-patch  {:color "#d2a8ff" :background "rgba(210,168,255,0.12)"}]
+   [:.http-delete {:color "#ff7b72" :background "rgba(255,123,114,0.12)"}]])
 
 (def callout
   [[:.callout {:padding       "1rem 1.25rem"
@@ -628,7 +642,7 @@
   (concat reset layout nav beta-banner hero buttons terminal
           sections cards grids pipeline steps showcase
           benchmarks footer
-          hub prose tables highlight-css queries-css scalar-css callout toc
+          hub prose tables highlight-css queries-css http-method callout toc
           mobile))
 
 (defn render
