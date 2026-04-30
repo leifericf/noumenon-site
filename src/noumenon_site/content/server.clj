@@ -3,14 +3,14 @@
   (:require [noumenon-site.parse.deploy :as parse]))
 
 (defn page []
-  [:section
+  [:section.docs
    [:div.container
-    [:h1 "Run Noumenon as a shared service"]
+    [:h1.docs-title "Run Noumenon as a shared service"]
     [:p.lead
      "Deploy a centralized Noumenon instance for your team or organization. "
      "Mirrored from "
      [:a {:href "https://github.com/leifericf/noumenon/blob/main/DEPLOY.md"} "DEPLOY.md"]
      " in the source repo."]
     (if-let [blocks (parse/parsed)]
-      (into [:div.markdown] blocks)
+      (into [:div.prose] blocks)
       [:p [:em "Deploy guide source not available."]])]])

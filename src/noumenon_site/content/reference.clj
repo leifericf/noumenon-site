@@ -1,5 +1,5 @@
 (ns noumenon-site.content.reference
-  "Reference hub. Phase 2 placeholder.")
+  "Reference hub.")
 
 (def cards
   [{:href "/queries/" :title "Queries"
@@ -10,9 +10,9 @@
     :body "Model Context Protocol setup and tool list."}])
 
 (defn page []
-  [:section
+  [:section.docs
    [:div.container
-    [:h1 "Reference"]
+    [:h1.docs-title "Reference"]
     [:p.lead "API surface for humans, agents, and LLMs."]
     [:div.hub-grid
      (for [{:keys [href title body]} cards]

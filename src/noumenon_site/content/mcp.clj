@@ -85,50 +85,53 @@
           (for [[name purpose] items]
             [:tr [:td [:code name]] [:td purpose]]))]])
 
+(defn- prose-body []
+  [:div.prose
+   [:h2 {:id "setup"} "Setup"]
+   (walkthrough
+    {:id "setup-desktop"
+     :title "Claude Desktop"
+     :intro [:span "Add a Noumenon entry to Claude Desktop's MCP config and restart the app."]
+     :config-path "~/Library/Application Support/Claude/claude_desktop_config.json"
+     :config-body desktop-config
+     :cmd? true})
+   (walkthrough
+    {:id "setup-code"
+     :title "Claude Code"
+     :intro [:span "Drop a project-local " [:code ".mcp.json"]
+             " in your repo. Optional: " [:code "noum setup code"]
+             " also installs a PreToolUse hook that nudges the agent to call MCP first."]
+     :config-path ".mcp.json (in your project root)"
+     :config-body code-config
+     :cmd? true})
+   (walkthrough
+    {:id "setup-generic"
+     :title "Any MCP client"
+     :intro [:span "Spawn " [:code "noum mcp"]
+             " over stdio. The launcher proxies to the local daemon."]
+     :config-path "Whatever shape your client expects — command + args."
+     :config-body desktop-config
+     :cmd? false})
+
+   [:h2 {:id "tools"} "Tool catalog"]
+   [:p
+    "30+ tools across discovery, querying, pipeline control, introspection, "
+    "and benchmarks. All return JSON; most accept the repo name or path as the "
+    "first argument."]
+   (for [section tools]
+     (tool-section section))
+
+   [:div.callout
+    [:p
+     "MCP tool schemas are part of the OpenAPI mirror under "
+     [:a {:href "/api/"} "HTTP API"] " — same shapes, both surfaces."]]])
+
 (defn page []
-  [:section
+  [:section.docs
    [:div.container
-    [:h1 "Model Context Protocol"]
+    [:h1.docs-title "Model Context Protocol"]
     [:p.lead
      "Noumenon exposes its knowledge graph as MCP tools so AI agents can query "
      "structured facts instead of scanning raw source. Works with Claude Desktop, "
      "Claude Code, or any MCP client."]
-
-    [:h2 {:id "setup"} "Setup"]
-    (walkthrough
-     {:id "setup-desktop"
-      :title "Claude Desktop"
-      :intro [:span "Add a Noumenon entry to Claude Desktop's MCP config and restart the app."]
-      :config-path "~/Library/Application Support/Claude/claude_desktop_config.json"
-      :config-body desktop-config
-      :cmd? true})
-    (walkthrough
-     {:id "setup-code"
-      :title "Claude Code"
-      :intro [:span "Drop a project-local " [:code ".mcp.json"]
-              " in your repo. Optional: " [:code "noum setup code"]
-              " also installs a PreToolUse hook that nudges the agent to call MCP first."]
-      :config-path ".mcp.json (in your project root)"
-      :config-body code-config
-      :cmd? true})
-    (walkthrough
-     {:id "setup-generic"
-      :title "Any MCP client"
-      :intro [:span "Spawn " [:code "noum mcp"]
-              " over stdio. The launcher proxies to the local daemon."]
-      :config-path "Whatever shape your client expects — command + args."
-      :config-body desktop-config
-      :cmd? false})
-
-    [:h2 {:id "tools"} "Tool catalog"]
-    [:p
-     "30+ tools across discovery, querying, pipeline control, introspection, "
-     "and benchmarks. All return JSON; most accept the repo name or path as the "
-     "first argument."]
-    (for [section tools]
-      (tool-section section))
-
-    [:div.callout
-     [:p
-      "MCP tool schemas are part of the OpenAPI mirror under "
-      [:a {:href "/api/"} "HTTP API"] " — same shapes, both surfaces."]]]])
+    (prose-body)]])

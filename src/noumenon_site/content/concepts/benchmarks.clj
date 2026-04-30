@@ -20,46 +20,55 @@
    [:td.num (str tok-w " ") (h/raw "&rarr;") " " [:strong tok-with]]
    [:td.num (str spd-w " ") (h/raw "&rarr;") " " [:strong spd-with]]])
 
+(defn- stat-cards []
+  [:div.layers-grid {:style "margin: 1rem 0 2.5rem;"}
+   (r/card {:variant :green :class "benchmark-stat"}
+           [:span.stat-number (h/raw "2.7&times;")]
+           [:h3 "More accurate"]
+           [:p "20% → 53% mean score"])
+   (r/card {:variant :green :class "benchmark-stat"}
+           [:span.stat-number "55% faster"]
+           [:h3 "Less waiting"]
+           [:p "13.6s → 6.1s per question"])
+   (r/card {:variant :green :class "benchmark-stat"}
+           [:span.stat-number "80% cheaper"]
+           [:h3 "Fewer tokens"]
+           [:p "37K → 7K input tokens"])])
+
+(defn- prose-body []
+  [:div.prose
+   [:h2 {:id "headline"} "Headline numbers"]
+   (stat-cards)
+
+   [:h2 {:id "methodology"} "Methodology"]
+   [:p
+    "40 deterministic questions per repo, scored against a curated answer key. "
+    "Each question is asked twice: once with raw source-file context (the "
+    "“without” baseline), once via the Noumenon Ask agent (the “with” run). "
+    "Same model and same evaluator across both runs. Token counts are input "
+    "tokens only. Speed is wall-clock time per question."]
+
+   [:h2 {:id "full-table"} "Per-repository results"]
+   [:table.benchmark-table
+    [:thead
+     [:tr
+      [:th "Repository"] [:th "Language"]
+      [:th.num "Accuracy (Without → With)"]
+      [:th.num "Tokens (Without → With)"]
+      [:th.num "Speed (Without → With)"]]]
+    (into [:tbody] (map benchmark-row benchmark-rows))]
+
+   [:div.callout
+    [:p
+     "Run benchmarks yourself with " [:code "noum benchmark <repo>"]
+     " or via the MCP " [:code "noumenon_benchmark_run"] " tool. "
+     "Comparable metrics drop into the same Datomic graph as everything else."]]])
+
 (defn page []
-  [:section
+  [:section.docs
    [:div.container
-    [:h1 "Benchmarks"]
+    [:h1.docs-title "Benchmarks"]
     [:p.lead
      "We evaluate Noumenon by asking deterministic questions about 8 repos in 7 "
-     "languages, with and without the knowledge graph. " [:strong "Without"]
-     " is source files alone; " [:strong "With"] " is Noumenon-mediated answers."]
-    [:h2 {:id "headline"} "Headline numbers"]
-    [:div.layers-grid {:style "margin-top: 1.5rem;"}
-     (r/card {:variant :green :class "benchmark-stat"}
-             [:span.stat-number (h/raw "2.7&times;")]
-             [:h3 "More accurate"]
-             [:p "20% → 53% mean score"])
-     (r/card {:variant :green :class "benchmark-stat"}
-             [:span.stat-number "55% faster"]
-             [:h3 "Less waiting"]
-             [:p "13.6s → 6.1s per question"])
-     (r/card {:variant :green :class "benchmark-stat"}
-             [:span.stat-number "80% cheaper"]
-             [:h3 "Fewer tokens"]
-             [:p "37K → 7K input tokens"])]
-    [:h2 {:id "methodology"} "Methodology"]
-    [:p
-     "40 deterministic questions per repo, scored against a curated answer key. "
-     "Each question is asked twice: once with raw source-file context (the "
-     "“without” baseline), once via the Noumenon Ask agent (the “with” run). "
-     "Same model and same evaluator across both runs. Token counts are input "
-     "tokens only. Speed is wall-clock time per question."]
-    [:h2 {:id "full-table"} "Per-repository results"]
-    [:table.benchmark-table
-     [:thead
-      [:tr
-       [:th "Repository"] [:th "Language"]
-       [:th.num "Accuracy (Without → With)"]
-       [:th.num "Tokens (Without → With)"]
-       [:th.num "Speed (Without → With)"]]]
-     (into [:tbody] (map benchmark-row benchmark-rows))]
-    [:div.callout
-     [:p
-      "Run benchmarks yourself with " [:code "noum benchmark <repo>"]
-      " or via the MCP " [:code "noumenon_benchmark_run"] " tool. "
-      "Comparable metrics drop into the same Datomic graph as everything else."]]]])
+     "languages, with and without the knowledge graph."]
+    (prose-body)]])

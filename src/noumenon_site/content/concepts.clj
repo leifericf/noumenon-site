@@ -1,5 +1,5 @@
 (ns noumenon-site.content.concepts
-  "Concepts hub. Phase 2 placeholder.")
+  "Concepts hub.")
 
 (def cards
   [{:href "/concepts/knowledge-graph/" :title "Knowledge graph"
@@ -12,9 +12,9 @@
     :body "How we measure grounded answer quality."}])
 
 (defn page []
-  [:section
+  [:section.docs
    [:div.container
-    [:h1 "Concepts"]
+    [:h1.docs-title "Concepts"]
     [:p.lead "How Noumenon works, end to end."]
     [:div.hub-grid
      (for [{:keys [href title body]} cards]

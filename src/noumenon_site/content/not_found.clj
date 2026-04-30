@@ -2,7 +2,7 @@
   "404 page body.")
 
 (defn page []
-  [:section
+  [:section.docs
    [:div.container.section-center
-    [:h1 "Not found"]
+    [:h1.docs-title "Not found"]
     [:p "That page is gone or never existed. " [:a {:href "/"} "Return home"] "."]]])

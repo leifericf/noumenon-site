@@ -2,19 +2,13 @@
   "HTTP API reference page — Scalar-rendered OpenAPI."
   (:require [hiccup2.core :as h]))
 
-(def scalar-script
-  "import { createApiReference } from 'https://cdn.jsdelivr.net/npm/@scalar/api-reference@latest/dist/browser/standalone.js';
-createApiReference('#scalar-target', {
-  url: '/openapi.yaml',
-  theme: 'deepSpace',
-  hideDownloadButton: false,
-  layout: 'modern'
-});")
+(def scalar-config
+  (h/raw "{\"theme\":\"deepSpace\",\"layout\":\"modern\",\"hideDownloadButton\":false}"))
 
 (defn page []
-  [:section
+  [:section.docs
    [:div.container
-    [:h1 "HTTP API"]
+    [:h1.docs-title "HTTP API"]
     [:p.lead
      "Noumenon ships a REST API for headless integrations and the desktop UI. "
      "Spec source: "
@@ -23,5 +17,8 @@ createApiReference('#scalar-target', {
      ". Mirrored to "
      [:a {:href "/openapi.yaml"} "/openapi.yaml"]
      " on every site rebuild."]
-    [:div.scalar-frame {:id "scalar-target"}]
-    [:script {:type "module"} (h/raw scalar-script)]]])
+    [:div.scalar-frame
+     [:script {:id              "api-reference"
+               :data-url        "/openapi.yaml"
+               :data-configuration scalar-config}]
+     [:script {:src "https://cdn.jsdelivr.net/npm/@scalar/api-reference"}]]]])

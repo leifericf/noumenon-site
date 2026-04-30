@@ -13,9 +13,9 @@
 
 (defn page []
   (let [queries (parse/all)]
-    [:section
+    [:section.docs
      [:div.container
-      [:h1 "Query catalog"]
+      [:h1.docs-title "Query catalog"]
       [:p.lead
        (count queries) " named Datalog queries shipped with Noumenon. "
        "Run with " [:code "noum query <name> [args...]"]
@@ -29,7 +29,7 @@
        [:thead
         [:tr [:th "Name"] [:th "Description"] [:th "Inputs"]]]
        (into [:tbody] (map query-row queries))]
-      [:div.callout
+      [:div.callout {:style "margin-top: 2rem;"}
        [:p
         "Source-of-truth lives at "
         [:a {:href "https://github.com/leifericf/noumenon/tree/main/resources/queries"}

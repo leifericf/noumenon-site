@@ -3,13 +3,13 @@
   (:require [noumenon-site.parse.changelog :as parse]))
 
 (defn page []
-  [:section
+  [:section.docs
    [:div.container
-    [:h1 "Changelog"]
+    [:h1.docs-title "Changelog"]
     [:p.lead
      "All notable changes to Noumenon, mirrored from "
      [:a {:href "https://github.com/leifericf/noumenon/blob/main/CHANGES.md"} "CHANGES.md"]
      " in the source repo."]
     (if-let [blocks (parse/parsed)]
-      (into [:div.markdown] blocks)
+      (into [:div.prose] blocks)
       [:p [:em "Changelog source not available."]])]])

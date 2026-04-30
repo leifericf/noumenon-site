@@ -24,35 +24,42 @@
    ["source-code"   "Patch a small region of the Ask agent itself."]
    ["model-config"  "Swap providers, models, or sampling parameters."]])
 
+(defn- prose-body []
+  [:div.prose
+   [:h2 {:id "loop"} "The autonomous loop"]
+   [:p
+    "Each iteration picks one of five targets, drafts a change, applies it, runs "
+    "the benchmark suite, and compares the new score against the baseline. The loop "
+    "is bounded by iterations, wall-clock time, or LLM cost — whichever you set."]
+
+   [:h2 {:id "targets"} "Five targets"]
+   [:table.md-table
+    [:thead [:tr [:th "Target"] [:th "What changes"]]]
+    (into [:tbody]
+          (for [[k v] targets]
+            [:tr [:td [:code k]] [:td v]]))]
+
+   [:h2 {:id "anatomy"} "Anatomy of an iteration"]
+   [:p
+    "A run prints its baseline, then for each iteration: the chosen target, the "
+    "proposed change, the resulting score, and an "
+    [:strong "IMPROVED"] " or " [:strong "reverted"] " verdict."]
+   [:div {:style "margin: 1.25rem 0;"}
+    (apply r/terminal introspect-terminal-body)]
+
+   [:div.callout
+    [:p
+     "Run " [:code "noum introspect <repo> --help"] " for the full flag set, "
+     "or invoke the MCP equivalents: " [:code "noumenon_introspect"]
+     ", " [:code "noumenon_introspect_start"] ", and "
+     [:code "noumenon_introspect_status"] "."]]])
+
 (defn page []
-  [:section
+  [:section.docs
    [:div.container
-    [:h1 "Introspect"]
+    [:h1.docs-title "Introspect"]
     [:p.lead
      "Noumenon improves itself by running an autonomous loop. Propose a change, "
      "benchmark it against a fixed question set, keep the change if quality goes up, "
      "revert it if not."]
-    [:h2 {:id "loop"} "The autonomous loop"]
-    [:p
-     "Each iteration picks one of five targets, drafts a change, applies it, runs "
-     "the benchmark suite, and compares the new score against the baseline. The loop "
-     "is bounded by iterations, wall-clock time, or LLM cost — whichever you set."]
-    [:h2 {:id "targets"} "Five targets"]
-    [:table.md-table
-     [:thead [:tr [:th "Target"] [:th "What changes"]]]
-     (into [:tbody]
-           (for [[k v] targets]
-             [:tr [:td [:code k]] [:td v]]))]
-    [:h2 {:id "anatomy"} "Anatomy of an iteration"]
-    [:p
-     "A run prints its baseline, then for each iteration: the chosen target, the "
-     "proposed change, the resulting score, and an "
-     [:strong "IMPROVED"] " or " [:strong "reverted"] " verdict."]
-    [:div {:style "margin: 1.5rem 0;"}
-     (apply r/terminal introspect-terminal-body)]
-    [:div.callout
-     [:p
-      "Run " [:code "noum introspect <repo> --help"] " for the full flag set, "
-      "or invoke the MCP equivalents: " [:code "noumenon_introspect"]
-      ", " [:code "noumenon_introspect_start"] ", and "
-      [:code "noumenon_introspect_status"] "."]]]])
+    (prose-body)]])
