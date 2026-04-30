@@ -25,7 +25,7 @@
 (def tools
   [{:section "Discovery"
     :items
-    [["noumenon_status"        "Entity counts — verify the repo has been imported."]
+    [["noumenon_status"        "Entity counts. Use this to verify the repo has been imported."]
      ["noumenon_get_schema"    "Full attribute and entity-type listing."]
      ["noumenon_list_queries"  "List all named Datalog queries."]
      ["noumenon_list_databases" "All known databases with pipeline state and cost."]
@@ -72,7 +72,7 @@
    [:p intro]
    (when cmd?
      [:p "Or run " [:code (str "noum setup " (subs id 6))]
-      " — the CLI writes the file for you and adds Noumenon's CLAUDE.md guidance."])
+      ". The CLI writes the file for you and adds Noumenon's CLAUDE.md guidance."])
    [:p [:strong "Config path: "] [:code config-path]]
    (code-block "json" config-body)])
 
@@ -109,7 +109,7 @@
      :title "Any MCP client"
      :intro [:span "Spawn " [:code "noum mcp"]
              " over stdio. The launcher proxies to the local daemon."]
-     :config-path "Whatever shape your client expects — command + args."
+     :config-path "Whatever shape your client expects. Command plus args."
      :config-body desktop-config
      :cmd? false})
 
@@ -124,7 +124,7 @@
    [:div.callout
     [:p
      "MCP tool schemas are part of the OpenAPI mirror under "
-     [:a {:href "/api/"} "HTTP API"] " — same shapes, both surfaces."]]])
+     [:a {:href "/api/"} "HTTP API"] ". Same shapes, both surfaces."]]])
 
 (defn page []
   [:section.docs

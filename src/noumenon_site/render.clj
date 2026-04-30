@@ -27,7 +27,7 @@
     :external true}])
 
 (def beta-notice
-  "Experimental, early beta — data model and interfaces are unstable. Expect breaking changes between releases.")
+  "Experimental, early beta. Data model and interfaces are unstable; expect breaking changes between releases.")
 
 ;; --- Head ---
 

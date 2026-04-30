@@ -1,5 +1,5 @@
 (ns noumenon-site.content.concepts.source-control
-  "Source-control concept page — Git and Perforce ingestion.")
+  "Source-control concept page covering Git and Perforce ingestion.")
 
 (def identifier-rows
   [["Local path"           "/path/to/repo"
@@ -18,9 +18,10 @@
   [:div.prose
    [:h2 {:id "identifiers"} "Four kinds of repo identifier"]
    [:p
-    "Every Noumenon command — " [:code "noum digest"] ", " [:code "noum ask"]
-    ", " [:code "noumenon_query"] ", and the HTTP endpoints that take a repo arg "
-    "— accept any of the four. The dispatch is one regex on the input string."]
+    "Every Noumenon command that takes a repo argument ("
+    [:code "noum digest"] ", " [:code "noum ask"] ", " [:code "noumenon_query"]
+    ", and the HTTP endpoints) accepts any of the four. "
+    "The dispatch is one regex on the input string."]
    [:table.md-table
     [:thead [:tr [:th "Input"] [:th "Example"] [:th "What happens"]]]
     (into [:tbody]
@@ -40,34 +41,34 @@
     [:li "Files touched per commit, including renames and deletions."]
     [:li "Diff summaries (additions, deletions, files changed)."]]
    [:p
-    "Subsequent " [:code "noum update"] " calls are incremental — only commits "
-    "newer than the last imported HEAD are processed."]
+    "Subsequent " [:code "noum update"] " calls are incremental. "
+    "Only commits newer than the last imported HEAD are processed."]
 
    [:h2 {:id "perforce"} "Perforce"]
    [:p
     "Bridged through " [:code "git-p4"] ". A depot path that starts with "
     [:code "//"] " triggers a " [:code "git p4 clone"] " into "
-    [:code "data/repos/<derived-name>"] " — once cloned, it's a git repo "
+    [:code "data/repos/<derived-name>"] ". Once cloned, it's a git repo "
     "and the rest of the pipeline runs unchanged."]
    (code-block "bash" "noum digest //depot/ProjectA/main/...")
    [:p [:strong "Requirements:"]]
    [:ul
     [:li [:code "git p4"] " on the PATH (ships with most Git for Windows builds; on macOS via "
-     [:code "brew install git"] " + Python; on Linux often a separate package)."]
+     [:code "brew install git"] " plus Python; on Linux often a separate package)."]
     [:li "A working " [:code "P4PORT"] " / " [:code "P4USER"] " environment, the same as you'd use for the " [:code "p4"] " CLI."]]
    [:p [:strong "Tuning the clone:"]]
    [:ul
-    [:li [:code "--use-client-spec"] " — clone exactly the workspace view configured in your P4 client. Ignores Noumenon's default exclusions."]
-    [:li [:code "--max-changes N"] " — limit history depth. Useful for huge depots; defaults to full history."]
+    [:li [:code "--use-client-spec"] " clones exactly the workspace view configured in your P4 client. Ignores Noumenon's default exclusions."]
+    [:li [:code "--max-changes N"] " limits history depth. Useful for huge depots; defaults to full history."]
     [:li [:code "--p4-include \"*.uasset\""] " / " [:code "--p4-exclude \"*.custom\""]
-     " — adjust the binary-asset exclusion list."]
-    [:li [:code "--no-default-excludes"] " — skip the built-in exclusions entirely."]]
+     " adjust the binary-asset exclusion list."]
+    [:li [:code "--no-default-excludes"] " skips the built-in exclusions entirely."]]
    [:p
-    "The default exclusions strip common game-engine binaries — Unreal "
+    "The default exclusions strip common game-engine binaries: Unreal "
     [:code ".uasset"] "/" [:code ".umap"] ", Unity " [:code ".prefab"]
-    "/" [:code ".asset"] ", " [:code ".fbx"] "/" [:code ".png"] "/"
-    [:code ".wav"] "/" [:code ".mp4"] " families — so the clone stays small "
-    "and the LLM sees source, not assets. Override per-import when you need "
+    "/" [:code ".asset"] ", and the " [:code ".fbx"] "/" [:code ".png"] "/"
+    [:code ".wav"] "/" [:code ".mp4"] " families. The clone stays small "
+    "and the LLM sees source code rather than assets. Override per-import when you need "
     "a specific binary type indexed."]
    [:p
     [:code "noum update"] " on a git-p4 clone runs " [:code "git p4 sync"]
@@ -76,8 +77,8 @@
 
    [:h2 {:id "downstream"} "Same graph, regardless of source"]
    [:p
-    "Once the working tree is on disk, the rest of the pipeline — enrich, "
-    "analyze, synthesize, embed — does not know or care which source-control "
+    "Once the working tree is on disk, the rest of the pipeline (enrich, "
+    "analyze, synthesize, embed) does not know or care which source-control "
     "system the repo came from. Queries, the Ask agent, MCP tools, and the "
     "knowledge graph schema are identical in either case."]
 
@@ -97,6 +98,6 @@
     [:h1.docs-title "Source control"]
     [:p.lead
      "Noumenon ingests git history into the knowledge graph. Native git "
-     "works out of the box; Perforce works through git-p4. Once the tree "
+     "works out of the box, and Perforce works through git-p4. Once the tree "
      "is on disk, everything downstream is identical."]
     (prose-body)]])

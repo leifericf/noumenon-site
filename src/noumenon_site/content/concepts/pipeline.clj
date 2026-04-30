@@ -9,10 +9,10 @@
     :body  "Commits, files, authors, diffs, and directory structure parsed from git history into Datomic. No LLM calls. Fully reproducible: re-running on the same git state produces the same graph."}
    {:title "Enrich" :slug "enrich"
     :note  "Deterministic" :note-class nil
-    :body  "Cross-file import and dependency edges resolved by parsing source code. Supports Clojure, Python, JS/TS, Rust, Java, C#, C/C++, Go, Elixir, and Erlang. No LLM calls — this is structural extraction, not interpretation."}
+    :body  "Cross-file import and dependency edges resolved by parsing source code. Supports Clojure, Python, JS/TS, Rust, Java, C#, C/C++, Go, Elixir, and Erlang. No LLM calls. This is structural extraction, not interpretation."}
    {:title "Analyze" :slug "analyze"
     :note  "Micro / LLM" :note-class nil
-    :body  "An LLM reads each file and extracts code segments — functions, classes, types — with complexity ratings, code smells, safety concerns, purity analysis, and architectural hints. Parallelized with configurable concurrency. The most expensive stage."}
+    :body  "An LLM reads each file and extracts code segments (functions, classes, types) with complexity ratings, code smells, safety concerns, purity analysis, and architectural hints. Parallelized with configurable concurrency. The most expensive stage."}
    {:title "Synthesize" :slug "synthesize"
     :note  "Macro / LLM" :note-class :macro
     :body  "Queries the graph to identify logical components, classify files into architectural layers, and map component dependencies. Uses hierarchical map-reduce so it scales to repos with thousands of files."}
@@ -36,8 +36,8 @@
       [:p body]])
    [:div.callout
     [:p
-     "After embed, the graph is ready to query. Iterative use commands — "
-     [:code "noum ask"] ", " [:code "noum query"] ", and the MCP server — "
+     "After embed, the graph is ready to query. The iterative commands "
+     [:code "noum ask"] ", " [:code "noum query"] ", and the MCP server all "
      "read from the same Datomic database. " [:code "noum introspect"] " "
      "uses the graph to improve itself; see "
      [:a {:href "/concepts/introspect/"} "Introspect"] "."]]])
@@ -48,6 +48,6 @@
     [:h1.docs-title "Pipeline"]
     [:p.lead
      "Five stages turn a git repository into a queryable knowledge graph. "
-     "Each stage is idempotent — re-running it costs nothing if nothing changed."]
+     "Each stage is idempotent: re-running it costs nothing if nothing changed."]
     (diagram)
     (prose-body)]])

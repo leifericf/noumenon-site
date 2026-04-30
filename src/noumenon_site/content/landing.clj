@@ -1,5 +1,5 @@
 (ns noumenon-site.content.landing
-  "Landing page — pitch + signposts. The bulk of detail moved to
+  "Landing page: pitch and signposts. The bulk of detail moved to
    /concepts/, /reference/, and /server/ in the IA redesign."
   (:require [hiccup2.core :as h]
             [noumenon-site.render :as r]))
@@ -17,9 +17,9 @@
   [[:span.prompt "$"] " noum ask ./my-repo "
    [:span.green "\"Which files are the biggest risk hotspots?\""]
    "\n\n"
-   [:span.comment "# iteration 1 — querying files-by-complexity (47 results)"] "\n"
-   [:span.comment "# iteration 2 — querying commit frequency and authorship"] "\n"
-   [:span.comment "# iteration 3 — cross-referencing co-change patterns"] "\n\n"
+   [:span.comment "# iteration 1: querying files-by-complexity (47 results)"] "\n"
+   [:span.comment "# iteration 2: querying commit frequency and authorship"] "\n"
+   [:span.comment "# iteration 3: cross-referencing co-change patterns"] "\n\n"
    [:span.highlight "Top 5 risk hotspots:"] "\n"
    [:span.output "  src/api/middleware.ts    38 commits, 4 authors, very-complex\n"
     "  src/core/parser.ts       47 commits, 2 authors, very-complex\n"
@@ -37,9 +37,9 @@
     [:p.hero-sub
      "Compile your repository into a "
      [:a {:href "https://www.datomic.com"} "Datomic"]
-     " knowledge graph. AI agents query structured facts instead of scanning raw source — "
+     " knowledge graph. AI agents query structured facts instead of scanning raw source. "
      [:strong "2.7× more accurate"] ", "
-     [:strong "80% cheaper"] ", "
+     [:strong "80% cheaper"] ", and "
      [:strong "55% faster"] " across 8 repos."]
     [:div.hero-actions
      [:a.btn.btn-primary   {:href "/get-started/"} "Get started"]

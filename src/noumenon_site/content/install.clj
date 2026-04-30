@@ -54,7 +54,7 @@
    [:h3 {:id "docker"} "Docker"]
    (code-block "bash" "docker run --rm -v $PWD:/repo ghcr.io/leifericf/noumenon ask /repo \"...\"")
    [:p
-    "For full server-mode deployments — shared graphs, role-based tokens — "
+    "For full server-mode deployments (shared graphs, role-based tokens), "
     "see " [:a {:href "/server/"} "Run as a shared service"] "."]
 
    [:h2 {:id "llm-provider"} "Configure an LLM provider"]
