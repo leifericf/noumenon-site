@@ -6,10 +6,8 @@
   (:require [clojure.java.io :as io]
             [stasis.core :as stasis]
             [noumenon-site.render :as render]
+            [noumenon-site.paths :as paths]
             [noumenon-site.content.landing :as landing]))
-
-(def openapi-source-url
-  "https://raw.githubusercontent.com/leifericf/noumenon/main/resources/openapi.yaml")
 
 (defn pages
   "Returns a Stasis page map: {path -> (fn [ctx] html-string)}."
@@ -30,28 +28,28 @@
           (.mkdirs (.getParentFile dest))
           (io/copy f dest))))))
 
-(defn- fetch-openapi!
-  "Fetch the canonical openapi.yaml from leifericf/noumenon and write
-   it to out-dir/openapi.yaml. Single source of truth — no committed
-   copy in this repo."
-  [out-dir]
-  (let [dest (io/file out-dir "openapi.yaml")]
-    (with-open [in  (io/input-stream openapi-source-url)
-                out (io/output-stream dest)]
-      (io/copy in out))))
+(defn- copy-openapi!
+  "Copy openapi.yaml from the local noumenon source checkout into
+   out-dir. The noumenon repo remains the single source of truth."
+  [out-dir source]
+  (let [src  (io/file source "resources/openapi.yaml")
+        dest (io/file out-dir "openapi.yaml")]
+    (.mkdirs (.getParentFile dest))
+    (io/copy src dest)))
 
 (defn build-site!
-  "Entry point for clj -X:build. Exports pages to out-dir (default _site)."
-  [& {:keys [out-dir] :or {out-dir "_site"}}]
-  (println "Building noumenon-site into" out-dir "...")
-  (stasis/empty-directory! out-dir)
-  (stasis/export-pages (pages) out-dir)
-  (copy-public-assets! out-dir)
-  (try
-    (fetch-openapi! out-dir)
-    (println "  Fetched openapi.yaml from" openapi-source-url)
-    (catch Exception e
-      (println "  Warning: failed to fetch openapi.yaml:" (.getMessage e))))
-  (println "Site built successfully!")
-  (println (str "  " (count (pages)) " pages generated"))
-  (println (str "  Open " out-dir "/index.html to preview")))
+  "Entry point for clj -X:build. Exports pages to out-dir (default _site).
+   Reads cross-repo content from noumenon-source (resolved via
+   NOUMENON_SOURCE env or ~/Code/noumenon fallback when not provided)."
+  [& {:keys [out-dir noumenon-source]
+      :or {out-dir "_site"}}]
+  (let [source (paths/noumenon-source noumenon-source)]
+    (println "Building noumenon-site into" out-dir "...")
+    (println "  Sourcing cross-repo content from" source)
+    (stasis/empty-directory! out-dir)
+    (stasis/export-pages (pages) out-dir)
+    (copy-public-assets! out-dir)
+    (copy-openapi! out-dir source)
+    (println "Site built successfully!")
+    (println (str "  " (count (pages)) " pages generated"))
+    (println (str "  Open " out-dir "/index.html to preview"))))

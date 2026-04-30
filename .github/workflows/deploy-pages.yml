@@ -3,7 +3,7 @@ on:
   push:
     branches: [main]
   schedule:
-    - cron: '17 6 * * *'  # daily ~06:17 UTC — keeps openapi.yaml fresh
+    - cron: '17 6 * * *'  # daily ~06:17 UTC — refreshes cross-repo content from leifericf/noumenon
   workflow_dispatch:
 
 permissions:
@@ -23,6 +23,8 @@ jobs:
       url: ${{ steps.deploy.outputs.page_url }}
     steps:
       - uses: actions/checkout@v4
+      - name: Clone noumenon source
+        run: git clone --depth=1 https://github.com/leifericf/noumenon.git ../noumenon-src
       - uses: DeLaGuardo/setup-clojure@13.0
         with: { cli: latest }
       - uses: actions/cache@v4
@@ -32,6 +34,8 @@ jobs:
             ~/.gitlibs
           key: m2-${{ hashFiles('deps.edn') }}
       - name: Build site
+        env:
+          NOUMENON_SOURCE: ${{ github.workspace }}/../noumenon-src
         run: clojure -X:build
       - uses: actions/configure-pages@v5
       - uses: actions/upload-pages-artifact@v3
