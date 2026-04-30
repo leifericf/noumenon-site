@@ -1,6 +1,7 @@
 (ns noumenon-site.render
   "Page chrome and shared building blocks (head, nav, footer, terminal, cards)."
   (:require [hiccup2.core :as h]
+            [noumenon-site.highlight :as highlight]
             [noumenon-site.styles :as styles]))
 
 ;; --- Site config ---
@@ -13,24 +14,40 @@
 (def site-url "https://noumenon.leifericf.com")
 (def site-tagline
   "Noumenon - Precise, Grounded Answers About Your Codebase")
+(def ga-measurement-id "G-LD8F7JFYGB")
+(def ga-hostname "noumenon.leifericf.com")
 
 (def nav-items
-  [{:href "#layers"        :label "Knowledge Levels"}
-   {:href "#how-it-works"  :label "How It Works"}
-   {:href "#introspect"    :label "Introspect"}
-   {:href "#benchmarks"    :label "Benchmarks"}
-   {:href "#features"      :label "Features"}
-   {:href "#server-mode"   :label "Server Mode"}
-   {:href "#get-started"   :label "Get Started"}
-   {:href "https://github.com/leifericf/noumenon" :label "GitHub"}])
+  [{:href "/get-started/" :label "Install"    :page :install}
+   {:href "/concepts/"    :label "Concepts"   :page :concepts}
+   {:href "/reference/"   :label "Reference"  :page :reference}
+   {:href "/server/"      :label "Server"     :page :server}
+   {:href "https://github.com/leifericf/noumenon"
+    :label "GitHub"
+    :external true}])
 
 (def beta-notice
   "Experimental, early beta — data model and interfaces are unstable. Expect breaking changes between releases.")
 
 ;; --- Head ---
 
+(defn- ga-script-tag []
+  [:script {:async true
+            :src (str "https://www.googletagmanager.com/gtag/js?id=" ga-measurement-id)}])
+
+(defn- ga-config-script []
+  [:script (h/raw
+            (str "if(location.hostname==='" ga-hostname "'){"
+                 "window.dataLayer=window.dataLayer||[];"
+                 "function gtag(){dataLayer.push(arguments);}"
+                 "gtag('js',new Date());"
+                 "gtag('config','" ga-measurement-id "',{anonymize_ip:true});"
+                 "}"))])
+
 (defn- head [{:keys [title description]}]
-  (let [page-title (or title site-tagline)
+  (let [page-title (if title
+                     (str title " | " site-title)
+                     site-tagline)
         desc       (or description site-description)]
     [:head
      [:meta {:charset "utf-8"}]
@@ -43,7 +60,9 @@
      [:meta {:property "og:type"        :content "website"}]
      [:meta {:name "twitter:card"       :content "summary_large_image"}]
      [:link {:rel "icon" :href "/favicon.svg" :type "image/svg+xml"}]
-     [:style (h/raw (styles/render))]]))
+     [:style (h/raw (styles/render))]
+     (ga-script-tag)
+     (ga-config-script)]))
 
 ;; --- Nav ---
 
@@ -53,14 +72,22 @@
    [:rect {:y  9 :width 20 :height 2 :rx 1}]
    [:rect {:y 15 :width 20 :height 2 :rx 1}]])
 
-(defn- nav []
+(defn- nav-link [active-page {:keys [href label page external]}]
+  [:li
+   [:a (cond-> {:href href}
+         (and page (= page active-page)) (assoc :class "active")
+         external (assoc :target "_blank" :rel "noopener"))
+    label
+    (when external " ↗")]])
+
+(defn- nav [active-page]
   [:nav.nav
    [:div.container
-    [:a.nav-brand {:href "#"} site-title]
+    [:a.nav-brand {:href "/"} site-title]
     [:button.nav-toggle {:aria-label "Menu"} (nav-toggle-icon)]
     [:ul.nav-links
-     (for [{:keys [href label]} nav-items]
-       [:li [:a {:href href} label]])]]])
+     (for [item nav-items]
+       (nav-link active-page item))]]])
 
 (defn- beta-banner []
   [:div.beta-banner.container
@@ -68,21 +95,39 @@
 
 ;; --- Footer ---
 
-(def footer-links
-  [{:href "https://github.com/leifericf/noumenon"                      :label "GitHub"}
-   {:href "https://github.com/leifericf/noumenon#readme"               :label "Documentation"}
-   {:href "https://github.com/leifericf/noumenon/blob/main/CHANGES.md" :label "Changelog"}
-   {:href "https://github.com/leifericf/noumenon/blob/main/LICENSE"    :label "MIT License"}
-   {:href "https://www.datomic.com"                                    :label "Datomic"}
-   {:href "https://github.com/leifericf/claude-code-toolkit"           :label "Claude Code Toolkit"}])
+(def footer-sections
+  [{:heading "Get started"
+    :links [{:href "/get-started/" :label "Install"}
+            {:href "/mcp/"         :label "MCP setup"}
+            {:href "/server/"      :label "Self-host"}]}
+   {:heading "Learn"
+    :links [{:href "/concepts/"                     :label "Concepts"}
+            {:href "/concepts/knowledge-graph/"     :label "Knowledge graph"}
+            {:href "/concepts/pipeline/"            :label "Pipeline"}
+            {:href "/concepts/introspect/"          :label "Introspect"}
+            {:href "/concepts/benchmarks/"          :label "Benchmarks"}]}
+   {:heading "Reference"
+    :links [{:href "/reference/" :label "Overview"}
+            {:href "/queries/"   :label "Queries"}
+            {:href "/api/"       :label "HTTP API"}
+            {:href "/mcp/"       :label "MCP tools"}]}
+   {:heading "Project"
+    :links [{:href "https://github.com/leifericf/noumenon"             :label "GitHub"}
+            {:href "/changelog/"                                       :label "Changelog"}
+            {:href "https://github.com/leifericf/noumenon/blob/main/LICENSE"
+             :label "MIT License"}]}])
 
 (defn- footer []
   [:footer.footer
    [:div.container
-    [:div.footer-links
-     (for [{:keys [href label]} footer-links]
-       [:a {:href href} label])]
-    [:p "Leif Eric Fredheim"]]])
+    [:div.footer-grid
+     (for [{:keys [heading links]} footer-sections]
+       [:div.footer-col
+        [:h4 heading]
+        [:ul
+         (for [{:keys [href label]} links]
+           [:li [:a {:href href} label]])]])]
+    [:p.footer-credit "Leif Eric Fredheim"]]])
 
 ;; --- Mobile nav script ---
 
@@ -96,7 +141,7 @@
    });
  });")
 
-;; --- Building blocks (used by content/landing) ---
+;; --- Building blocks (used by content namespaces) ---
 
 (defn terminal
   "Wraps body in a styled terminal block (header dots + <pre>).
@@ -142,16 +187,19 @@
 ;; --- Page assembly ---
 
 (defn html-page
-  "Render a full HTML page. opts: {:title :description}. body is Hiccup."
-  [opts & body]
+  "Render a full HTML page. opts: {:title :description :active-page :show-banner?}.
+   body is Hiccup. :show-banner? defaults true."
+  [{:keys [active-page show-banner?] :or {show-banner? true} :as opts} & body]
   (str
    "<!DOCTYPE html>\n"
    (h/html
     [:html {:lang "en"}
      (head opts)
      [:body
-      (nav)
-      (beta-banner)
-      body
+      (nav active-page)
+      (when show-banner? (beta-banner))
+      [:main body]
       (footer)
-      [:script (h/raw mobile-nav-script)]]])))
+      [:script (h/raw mobile-nav-script)]
+      (when (seq highlight/highlight-js)
+        [:script (h/raw highlight/highlight-js)])]])))
