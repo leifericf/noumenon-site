@@ -1,0 +1,6 @@
+/_site/
+.cpcache/
+.lsp/
+.clj-kondo/
+*.class
+.DS_Store
