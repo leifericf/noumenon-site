@@ -1,8 +1,15 @@
 (ns noumenon-site.content.changelog
-  "Changelog page (parsed from CHANGES.md). Phase 2 placeholder.")
+  "Changelog page — parsed from leifericf/noumenon CHANGES.md."
+  (:require [noumenon-site.parse.changelog :as parse]))
 
 (defn page []
   [:section
    [:div.container
     [:h1 "Changelog"]
-    [:p "Parsed from CHANGES.md in the source repo."]]])
+    [:p.lead
+     "All notable changes to Noumenon, mirrored from "
+     [:a {:href "https://github.com/leifericf/noumenon/blob/main/CHANGES.md"} "CHANGES.md"]
+     " in the source repo."]
+    (if-let [blocks (parse/parsed)]
+      (into [:div.markdown] blocks)
+      [:p [:em "Changelog source not available."]])]])
