@@ -89,7 +89,8 @@
          :font-size  "0.875rem"
          :transition "color 0.15s"}
      [:&:hover {:color           (:text colors)
-                :text-decoration "none"}]]]
+                :text-decoration "none"}]
+     [:&.active {:color (:text colors)}]]]
    [:.nav-toggle {:display    "none"
                   :background "none"
                   :border     "none"
@@ -414,18 +415,175 @@
 
 (def footer
   [[:.footer {:border-top (str "1px solid " (:border colors))
-              :padding    "2.5rem 0"
-              :text-align "center"
+              :padding    "3rem 0 2rem"
               :color      (:muted colors)
               :font-size  "0.8125rem"}]
-   [:.footer-links {:display          "flex"
-                    :gap              "1.5rem"
-                    :justify-content  "center"
-                    :margin-bottom    "1rem"
-                    :flex-wrap        "wrap"}]
-   [:.footer-links
+   [:.footer
+    [:.container {:display "block"}]]
+   [:.footer-grid {:display               "grid"
+                   :grid-template-columns "repeat(4, 1fr)"
+                   :gap                   "2rem"
+                   :margin-bottom         "2rem"}]
+   [:.footer-col
+    [:h4 {:color         (:text colors)
+          :font-size     "0.8125rem"
+          :font-weight   600
+          :margin-bottom "0.75rem"
+          :text-transform "uppercase"
+          :letter-spacing "0.04em"}]
+    [:ul {:list-style "none"
+          :display    "flex"
+          :flex-direction "column"
+          :gap        "0.4rem"}]
     [:a {:color     (:muted colors)
          :font-size "0.8125rem"}
+     [:&:hover {:color (:text colors)}]]]
+   [:.footer-credit {:text-align "center"
+                     :padding-top "1.5rem"
+                     :border-top (str "1px solid " (:border colors))}]])
+
+;; --- Doc / hub layouts (added in IA redesign) ---
+
+(def hub
+  [[:.lead {:font-size "1.15rem"
+            :color     (:muted colors)
+            :max-width "60ch"
+            :margin    "0.75rem 0 2.5rem"}]
+   [:.hub-grid {:display               "grid"
+                :grid-template-columns "repeat(auto-fit, minmax(260px, 1fr))"
+                :gap                   "1.25rem"
+                :margin-top            "2rem"}]
+   [:.hub-card {:display     "block"
+                :padding     "1.5rem"
+                :background  (:card-bg colors)
+                :border      (str "1px solid " (:border colors))
+                :border-radius "10px"
+                :color       (:text colors)
+                :transition  "border-color 0.15s, transform 0.15s"}
+    [:&:hover {:border-color    (:border-hover colors)
+               :text-decoration "none"
+               :transform       "translateY(-1px)"}]
+    [:h3 {:font-size     "1.05rem"
+          :margin-bottom "0.5rem"}]
+    [:p {:color     (:muted colors)
+         :font-size "0.9rem"
+         :margin    0}]]])
+
+(def markdown
+  [[:.markdown
+    [:h2 {:font-size      "1.5rem"
+          :margin         "2.5rem 0 1rem"
+          :padding-bottom "0.4rem"
+          :border-bottom  (str "1px solid " (:border colors))}]
+    [:h3 {:font-size  "1.15rem"
+          :margin     "1.75rem 0 0.6rem"
+          :color      (:text colors)}]
+    [:p {:margin     "0.75rem 0"
+         :max-width  "72ch"}]
+    [:ul {:margin     "0.75rem 0 0.75rem 1.5rem"
+          :max-width  "72ch"}]
+    [:li {:margin-bottom "0.35rem"}]
+    [:code {:background (:bg-alt colors)
+            :padding    "0.1rem 0.35rem"
+            :border-radius "4px"
+            :font-size  "0.875em"
+            :color      (:purple colors)}]
+    [:pre {:background    (:bg-alt colors)
+           :border        (str "1px solid " (:border colors))
+           :border-radius "8px"
+           :padding       "1rem 1.25rem"
+           :margin        "1rem 0"
+           :overflow-x    "auto"
+           :font-size     "0.85rem"
+           :line-height   1.55}
+     [:code {:background "none"
+             :padding    0
+             :color      (:text colors)}]]
+    [:.md-table {:width          "100%"
+                 :border-collapse "collapse"
+                 :margin         "1.25rem 0"
+                 :font-size      "0.9rem"}
+     [:th :td {:padding        "0.55rem 0.75rem"
+               :text-align     "left"
+               :border-bottom  (str "1px solid " (:border colors))}]
+     [:th {:color       (:text colors)
+           :font-weight 600
+           :background  (:bg-alt colors)}]
+     [:td {:color (:muted colors)}
+      [:code {:font-size "0.85em"}]]]
+    [:a {:color (:blue colors)}]]])
+
+(def highlight-css
+  [[:.hl-keyword {:color (:blue-bright colors)}]
+   [:.hl-string  {:color (:green colors)}]
+   [:.hl-number  {:color (:warning colors)}]
+   [:.hl-comment {:color      (:muted-deep colors)
+                  :font-style "italic"}]
+   [:.hl-type    {:color (:purple colors)}]])
+
+(def queries-css
+  [[:.queries-filter {:display       "block"
+                      :width         "100%"
+                      :max-width     "420px"
+                      :margin        "1rem 0 1.5rem"
+                      :padding       "0.55rem 0.85rem"
+                      :background    (:bg-alt colors)
+                      :border        (str "1px solid " (:border colors))
+                      :border-radius "6px"
+                      :color         (:text colors)
+                      :font-family   font-body
+                      :font-size     "0.95rem"}
+    [:&:focus {:outline      "none"
+               :border-color (:blue colors)}]]
+   [:.queries-table {:width           "100%"
+                     :border-collapse "collapse"
+                     :font-size       "0.9rem"}
+    [:th :td {:padding       "0.6rem 0.75rem"
+              :text-align    "left"
+              :vertical-align "top"
+              :border-bottom (str "1px solid " (:border colors))}]
+    [:th {:color       (:text colors)
+          :font-weight 600
+          :background  (:bg-alt colors)}]
+    [:td {:color (:muted colors)}]
+    [:.query-name {:color       (:text colors)
+                   :font-family font-mono
+                   :font-size   "0.85rem"}]
+    [:.query-inputs {:font-family font-mono
+                     :font-size   "0.8rem"
+                     :color       (:purple colors)}]]])
+
+(def scalar-css
+  [[:.scalar-frame {:min-height "70vh"
+                    :margin     "1.5rem 0 0"}]])
+
+(def callout
+  [[:.callout {:padding       "1rem 1.25rem"
+               :margin        "1.25rem 0"
+               :background    (:bg-alt colors)
+               :border-left   (str "3px solid " (:blue colors))
+               :border-radius "6px"
+               :color         (:text colors)}
+    [:p {:margin     0
+         :font-size  "0.95rem"}]]])
+
+(def toc
+  [[:.toc {:padding       "1rem 1.25rem"
+           :margin        "1rem 0 2rem"
+           :background    (:bg-alt colors)
+           :border        (str "1px solid " (:border colors))
+           :border-radius "6px"
+           :font-size     "0.9rem"}
+    [:h4 {:font-size     "0.75rem"
+          :text-transform "uppercase"
+          :letter-spacing "0.05em"
+          :color         (:muted colors)
+          :margin-bottom "0.5rem"}]
+    [:ul {:list-style "none"
+          :display    "flex"
+          :flex-direction "column"
+          :gap        "0.3rem"}]
+    [:a {:color (:muted colors)}
      [:&:hover {:color (:text colors)}]]]])
 
 ;; --- Mobile ---
@@ -458,7 +616,9 @@
 (def stylesheet
   (concat reset layout nav beta-banner hero buttons terminal
           sections cards grids pipeline steps showcase
-          benchmarks footer mobile))
+          benchmarks footer
+          hub markdown highlight-css queries-css scalar-css callout toc
+          mobile))
 
 (defn render
   "Compile the stylesheet into a CSS string. Inlined into <style>."
