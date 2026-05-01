@@ -40,8 +40,10 @@
           (for [[entity facts] schema-rows]
             [:tr [:td [:code entity]] [:td facts]]))]
    [:p
-    "Run " [:code "noum show-schema"] " or call "
-    [:code "noumenon_get_schema"] " (MCP) to see the full attribute list."]
+    "The full picture, with every attribute and the entity diagram, lives at "
+    [:a {:href "/schema/"} "Schema"] ". For the live schema as the daemon "
+    "sees it, run " [:code "noum show-schema"] " or call "
+    [:code "noumenon_get_schema"] " over MCP."]
 
    [:h2 {:id "querying"} "Querying the Graph"]
    [:p

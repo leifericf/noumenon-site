@@ -4,6 +4,8 @@
 (def cards
   [{:href "/cli/" :title "CLI"
     :body "Every noum subcommand grouped by purpose."}
+   {:href "/schema/" :title "Schema"
+    :body "Entity diagram and the full attribute list, parsed from the source repo."}
    {:href "/queries/" :title "Queries"
     :body "Catalog of named Datalog queries, generated from the source repo."}
    {:href "/api/" :title "HTTP API"

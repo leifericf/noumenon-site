@@ -71,17 +71,24 @@
     if (fn) el.innerHTML = fn(el.textContent);
   });
 
-  var queryFilter = document.getElementById('queries-filter');
-  if (queryFilter) {
-    var rows = document.querySelectorAll('.queries-table tbody tr');
-    queryFilter.addEventListener('input', function() {
-      var q = queryFilter.value.toLowerCase().trim();
+  function attachFilter(inputId, rowSelector, dataKeys) {
+    var input = document.getElementById(inputId);
+    if (!input) return;
+    var rows = document.querySelectorAll(rowSelector);
+    input.addEventListener('input', function() {
+      var q = input.value.toLowerCase().trim();
       rows.forEach(function(row) {
-        var name = (row.getAttribute('data-name') || '').toLowerCase();
-        var desc = (row.getAttribute('data-desc') || '').toLowerCase();
-        row.style.display = (!q || name.indexOf(q) !== -1 || desc.indexOf(q) !== -1) ? '' : 'none';
+        if (!q) { row.style.display = ''; return; }
+        var match = false;
+        for (var i = 0; i < dataKeys.length; i++) {
+          var v = (row.getAttribute('data-' + dataKeys[i]) || '').toLowerCase();
+          if (v.indexOf(q) !== -1) { match = true; break; }
+        }
+        row.style.display = match ? '' : 'none';
       });
     });
   }
+  attachFilter('queries-filter', '.queries-table tbody tr', ['name', 'desc']);
+  attachFilter('schema-filter',  '.schema-table tbody tr',  ['name', 'doc']);
 })();
 ")

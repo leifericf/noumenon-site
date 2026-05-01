@@ -112,6 +112,7 @@
    {:heading "Reference"
     :links [{:href "/reference/" :label "Overview"}
             {:href "/cli/"       :label "CLI"}
+            {:href "/schema/"    :label "Schema"}
             {:href "/queries/"   :label "Queries"}
             {:href "/api/"       :label "HTTP API"}
             {:href "/mcp/"       :label "MCP Tools"}]}

@@ -20,6 +20,7 @@
             [noumenon-site.content.reference :as reference]
             [noumenon-site.content.queries :as queries]
             [noumenon-site.content.cli :as cli]
+            [noumenon-site.content.schema :as schema]
             [noumenon-site.content.api :as api]
             [noumenon-site.content.mcp :as mcp]
             [noumenon-site.content.server :as server]
@@ -91,6 +92,10 @@
    "/cli/index.html"
    (render-page {:title "CLI" :active-page :reference}
                 cli/page)
+
+   "/schema/index.html"
+   (render-page {:title "Schema" :active-page :reference}
+                schema/page)
 
    "/api/index.html"
    (render-page {:title "HTTP API" :active-page :reference}

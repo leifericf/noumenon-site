@@ -568,6 +568,38 @@
                      :background  "transparent"
                      :padding     0}]]])
 
+(def mermaid-frame
+  [[:.mermaid-frame {:padding       "1.5rem"
+                     :margin        "1.5rem 0 2rem"
+                     :background    (:bg-alt colors)
+                     :border        (str "1px solid " (:border colors))
+                     :border-radius "10px"
+                     :overflow-x    "auto"}]
+   [:.mermaid-frame [:.mermaid {:background "transparent"
+                                :font-size  "0.9rem"}]]])
+
+(def schema-table
+  [[:.schema-table {:width           "100%"
+                    :border-collapse "collapse"
+                    :margin          "0.75rem 0 1.5rem"
+                    :font-size       "0.875rem"
+                    :border          (str "1px solid " (:border colors))
+                    :border-radius   "6px"
+                    :overflow        "hidden"}
+    [:th :td {:padding        "0.5rem 0.75rem"
+              :text-align     "left"
+              :vertical-align "top"
+              :border-bottom  (str "1px solid " (:border colors))}]
+    [:th {:color           (:text colors)
+          :font-weight     600
+          :background      (:bg-alt colors)
+          :font-size       "0.78rem"
+          :text-transform  "uppercase"
+          :letter-spacing  "0.04em"}]
+    [:td {:color (:muted colors)}
+     [:code {:font-size "0.8em"}]]
+    [:tbody [:tr [:&:hover {:background "rgba(99, 102, 241, 0.04)"}]]]]])
+
 (def http-method
   [[:.http-method {:display       "inline-block"
                    :font-family   font-mono
@@ -646,7 +678,8 @@
   (concat reset layout nav beta-banner hero buttons terminal
           sections cards grids pipeline steps showcase
           benchmarks footer
-          hub prose tables highlight-css queries-css http-method callout toc
+          hub prose tables highlight-css queries-css http-method
+          mermaid-frame schema-table callout toc
           mobile))
 
 (defn render
