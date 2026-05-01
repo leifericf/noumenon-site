@@ -15,8 +15,10 @@
             [noumenon-site.content.concepts.introspect :as c-introspect]
             [noumenon-site.content.concepts.benchmarks :as c-benchmarks]
             [noumenon-site.content.concepts.source-control :as c-source-control]
+            [noumenon-site.content.concepts.data-safety :as c-data-safety]
             [noumenon-site.content.reference :as reference]
             [noumenon-site.content.queries :as queries]
+            [noumenon-site.content.cli :as cli]
             [noumenon-site.content.api :as api]
             [noumenon-site.content.mcp :as mcp]
             [noumenon-site.content.server :as server]
@@ -69,6 +71,10 @@
    (render-page {:title "Source control" :active-page :concepts}
                 c-source-control/page)
 
+   "/concepts/data-safety/index.html"
+   (render-page {:title "Data safety" :active-page :concepts}
+                c-data-safety/page)
+
    "/reference/index.html"
    (render-page {:title "Reference" :active-page :reference}
                 reference/page)
@@ -76,6 +82,10 @@
    "/queries/index.html"
    (render-page {:title "Queries" :active-page :reference}
                 queries/page)
+
+   "/cli/index.html"
+   (render-page {:title "CLI" :active-page :reference}
+                cli/page)
 
    "/api/index.html"
    (render-page {:title "HTTP API" :active-page :reference}

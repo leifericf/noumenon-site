@@ -34,6 +34,31 @@
      [:div
       [:h2 {:id slug} title]
       [:p body]])
+   [:h2 {:id "scoping"} "Scoping the Work"]
+   [:p
+    "Pipeline commands accept selectors so you can run a subset of the repo "
+    "without re-doing everything. Useful for big monorepos and tight loops "
+    "while you're tuning prompts."]
+   [:ul
+    [:li [:code "--path src/foo"] " limits to a directory."]
+    [:li [:code "--include \"src/**/*.clj\""] " is a glob whitelist."]
+    [:li [:code "--exclude \"**/*_test.clj\""] " is a glob blacklist."]
+    [:li [:code "--lang clojure"] " restricts to one language."]]
+   [:p
+    "Selectors apply to " [:code "analyze"] ", " [:code "enrich"]
+    ", " [:code "update"] ", and " [:code "digest"] "."]
+
+   [:h2 {:id "drift"} "Prompt and Model Drift"]
+   [:p
+    "When you change a prompt template or switch LLM models, prior analysis "
+    "results are still valid until you decide otherwise. Drift is advisory "
+    "by default. Noumenon logs which files were analyzed with a different "
+    "prompt or model; pass " [:code "--reanalyze prompt-changed"] ", "
+    [:code "--reanalyze model-changed"] ", "
+    [:code "--reanalyze stale"] ", or "
+    [:code "--reanalyze all"]
+    " to refresh."]
+
    [:div.callout
     [:p
      "After embed, the graph is ready to query. The iterative commands "

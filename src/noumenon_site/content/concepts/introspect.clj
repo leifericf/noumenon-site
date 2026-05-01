@@ -26,20 +26,20 @@
 
 (defn- prose-body []
   [:div.prose
-   [:h2 {:id "loop"} "The autonomous loop"]
+   [:h2 {:id "loop"} "The Autonomous Loop"]
    [:p
     "Each iteration picks one of five targets, drafts a change, applies it, runs "
     "the benchmark suite, and compares the new score against the baseline. The loop "
     "is bounded by iterations, wall-clock time, or LLM cost, whichever you set first."]
 
-   [:h2 {:id "targets"} "Five targets"]
+   [:h2 {:id "targets"} "Five Targets"]
    [:table.md-table
     [:thead [:tr [:th "Target"] [:th "What changes"]]]
     (into [:tbody]
           (for [[k v] targets]
             [:tr [:td [:code k]] [:td v]]))]
 
-   [:h2 {:id "anatomy"} "Anatomy of an iteration"]
+   [:h2 {:id "anatomy"} "Anatomy of an Iteration"]
    [:p
     "A run prints its baseline, then for each iteration: the chosen target, the "
     "proposed change, the resulting score, and an "

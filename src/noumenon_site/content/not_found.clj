@@ -4,5 +4,5 @@
 (defn page []
   [:section.docs
    [:div.container.section-center
-    [:h1.docs-title "Not found"]
+    [:h1.docs-title "Not Found"]
     [:p "That page is gone or never existed. " [:a {:href "/"} "Return home"] "."]]])

@@ -23,7 +23,7 @@
     [:div.step
      [:div.step-number 1]
      [:div.step-content
-      [:h3 "Install the launcher"]
+      [:h3 "Install the Launcher"]
       [:code "curl -sSL https://noumenon.leifericf.com/install | bash"]
       [:p.step-hint
        "Installs the " [:code "noum"] " launcher to "
@@ -31,19 +31,19 @@
     [:div.step
      [:div.step-number 2]
      [:div.step-content
-      [:h3 "Run the demo"]
+      [:h3 "Run the Demo"]
       [:code "noum demo"]
       [:p.step-hint
        "Pre-built knowledge graph with sample questions. No LLM credentials needed."]]]
     [:div.step
      [:div.step-number 3]
      [:div.step-content
-      [:h3 "Ask a question about your own code"]
+      [:h3 "Ask a Question About Your Own Code"]
       [:code "noum ask /path/to/your/repo \"Where is auth handled?\""]
       [:p.step-hint
        "First call digests the repo (one-time). Subsequent calls reuse the graph."]]]]
 
-   [:h2 {:id "package-managers"} "Package managers"]
+   [:h2 {:id "package-managers"} "Package Managers"]
    [:p
     "Prefer a package manager? Noumenon ships through Homebrew, Scoop, and Docker. "
     "All channels track the same release artifacts."]
@@ -57,7 +57,7 @@
     "For full server-mode deployments (shared graphs, role-based tokens), "
     "see " [:a {:href "/server/"} "Run as a shared service"] "."]
 
-   [:h2 {:id "llm-provider"} "Configure an LLM provider"]
+   [:h2 {:id "llm-provider"} "Configure an LLM Provider"]
    [:p
     "Noumenon needs an LLM API key for the analyze, synthesize, and ask stages. "
     "Demo data works without one, but real repos do not."]
@@ -69,13 +69,31 @@
     "Built-in providers: " [:code ":glm"] " (Z.ai) and " [:code ":claude-api"]
     " (Anthropic). Discover available models with " [:code "noum llm-models"] "."]
 
-   [:h2 {:id "mcp"} "Use Noumenon from your AI agent"]
+   [:h2 {:id "interfaces"} "Other Ways to Drive It"]
    [:p
-    "Noumenon ships with a Model Context Protocol server. Your agent calls "
-    [:code "noumenon_ask"] ", " [:code "noumenon_query"]
-    ", and 30+ other tools without ever loading raw source into context."]
-   [:p
-    [:a.btn.btn-secondary {:href "/mcp/"} "MCP setup walkthrough →"]]
+    "The same daemon answers to several front-ends. Pick whichever fits the moment:"]
+   [:ul
+    [:li
+     [:strong "Interactive TUI."]
+     " Run " [:code "noum"] " with no arguments for a menu-driven terminal "
+     "interface. Repos and ask sessions populate from live data, so there's "
+     "nothing to memorize."]
+    [:li
+     [:strong "Visual desktop UI."]
+     " " [:code "noum open"] " launches an Electron app with a "
+     "force-directed graph, three-level drill-down, and a floating Ask "
+     "overlay. The launcher downloads the packaged app on first use."]
+    [:li
+     [:strong "Model Context Protocol."]
+     " " [:code "noum setup desktop"] " or " [:code "noum setup code"]
+     " wires Noumenon into Claude Desktop or Claude Code. Agents call "
+     [:code "noumenon_ask"] ", " [:code "noumenon_query"]
+     ", and 30+ other tools without loading raw source into context. See "
+     [:a {:href "/mcp/"} "MCP setup"] "."]
+    [:li
+     [:strong "HTTP API."]
+     " Headless integrations talk plain JSON to the daemon. See the "
+     [:a {:href "/api/"} "HTTP API reference"] "."]]
 
    [:div.callout
     [:p

@@ -16,7 +16,7 @@
 
 (defn- prose-body []
   [:div.prose
-   [:h2 {:id "identifiers"} "Four kinds of repo identifier"]
+   [:h2 {:id "identifiers"} "Four Kinds of Repo Identifier"]
    [:p
     "Every Noumenon command that takes a repo argument ("
     [:code "noum digest"] ", " [:code "noum ask"] ", " [:code "noumenon_query"]
@@ -75,7 +75,7 @@
     " followed by " [:code "git p4 rebase"] " before the incremental import, "
     "so new changelists land in the graph the same way new git commits do."]
 
-   [:h2 {:id "downstream"} "Same graph, regardless of source"]
+   [:h2 {:id "downstream"} "Same Graph, Regardless of Source"]
    [:p
     "Once the working tree is on disk, the rest of the pipeline (enrich, "
     "analyze, synthesize, embed) does not know or care which source-control "
@@ -95,7 +95,7 @@
 (defn page []
   [:section.docs
    [:div.container
-    [:h1.docs-title "Source control"]
+    [:h1.docs-title "Source Control"]
     [:p.lead
      "Noumenon ingests git history into the knowledge graph. Native git "
      "works out of the box, and Perforce works through git-p4. Once the tree "

@@ -96,7 +96,7 @@
 ;; --- Footer ---
 
 (def footer-sections
-  [{:heading "Get started"
+  [{:heading "Get Started"
     :links [{:href "/get-started/" :label "Install"}
             {:href "/mcp/"         :label "MCP setup"}
             {:href "/server/"      :label "Self-host"}]}
@@ -105,13 +105,15 @@
             {:href "/concepts/knowledge-graph/"     :label "Knowledge graph"}
             {:href "/concepts/pipeline/"            :label "Pipeline"}
             {:href "/concepts/source-control/"      :label "Source control"}
+            {:href "/concepts/data-safety/"         :label "Data safety"}
             {:href "/concepts/introspect/"          :label "Introspect"}
             {:href "/concepts/benchmarks/"          :label "Benchmarks"}]}
    {:heading "Reference"
     :links [{:href "/reference/" :label "Overview"}
+            {:href "/cli/"       :label "CLI"}
             {:href "/queries/"   :label "Queries"}
             {:href "/api/"       :label "HTTP API"}
-            {:href "/mcp/"       :label "MCP tools"}]}
+            {:href "/mcp/"       :label "MCP Tools"}]}
    {:heading "Project"
     :links [{:href "https://github.com/leifericf/noumenon"             :label "GitHub"}
             {:href "/changelog/"                                       :label "Changelog"}

@@ -13,25 +13,25 @@
 
 (defn- prose-body []
   [:div.prose
-   [:h2 {:id "three-levels"} "Three levels"]
+   [:h2 {:id "three-levels"} "Three Levels"]
    [:p
     "Noumenon compiles a repository into a multi-level Datomic graph. "
     "A single query can join commit history, file structure, and component architecture."]
    [:div.layers-grid {:style "margin: 1.5rem 0 2rem;"}
-    (r/card {:variant :green :tag "Micro" :title "Code segments"}
+    (r/card {:variant :green :tag "Micro" :title "Code Segments"}
             [:p "Functions, classes, and types with complexity ratings, code smells, "
              "safety concerns, purity analysis, and call graphs. Extracted by an LLM "
              "during the analyze stage."])
-    (r/card {:variant :purple :tag "Mid" :title "Files & imports"}
+    (r/card {:variant :purple :tag "Mid" :title "Files and Imports"}
             [:p "Git history, authorship, change frequency, cross-file import edges, "
              "and per-file semantic summaries. Files connect upward to components "
              "and downward to segments."])
-    (r/card {:variant :blue :tag "Macro" :title "Components & architecture"}
+    (r/card {:variant :blue :tag "Macro" :title "Components and Architecture"}
             [:p "Logical subsystems identified from directory structure, import "
              "graphs, and file summaries. Component dependencies, architectural "
              "layers, and category labels."])]
 
-   [:h2 {:id "schema-overview"} "Schema overview"]
+   [:h2 {:id "schema-overview"} "Schema Overview"]
    [:p "The graph schema is intentionally small. A handful of entity types, "
     "each with a few canonical attributes."]
    [:table.md-table
@@ -43,7 +43,7 @@
     "Run " [:code "noum show-schema"] " or call "
     [:code "noumenon_get_schema"] " (MCP) to see the full attribute list."]
 
-   [:h2 {:id "querying"} "Querying the graph"]
+   [:h2 {:id "querying"} "Querying the Graph"]
    [:p
     "All structure is queryable via Datalog. Noumenon ships with a "
     [:a {:href "/queries/"} "catalog of 90+ named queries"]
@@ -54,7 +54,7 @@
 (defn page []
   [:section.docs
    [:div.container
-    [:h1.docs-title "Knowledge graph"]
+    [:h1.docs-title "Knowledge Graph"]
     [:p.lead
      "Noumenon compiles a repository into a multi-level Datomic graph. "
      "Queries traverse between levels naturally."]

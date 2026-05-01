@@ -55,7 +55,7 @@
     [["noumenon_benchmark_run"      "Run benchmarks against the configured question set."]
      ["noumenon_benchmark_results"  "Get the latest run or look up by ID."]
      ["noumenon_benchmark_compare"  "Compare two runs by per-layer score deltas."]]}
-   {:section "Provider config"
+   {:section "Provider Config"
     :items
     [["noumenon_llm_providers" "List configured LLM providers and defaults."]
      ["noumenon_llm_models"    "List available models per provider."]]}
@@ -106,14 +106,14 @@
      :cmd? true})
    (walkthrough
     {:id "setup-generic"
-     :title "Any MCP client"
+     :title "Any MCP Client"
      :intro [:span "Spawn " [:code "noum mcp"]
              " over stdio. The launcher proxies to the local daemon."]
      :config-path "Whatever shape your client expects. Command plus args."
      :config-body desktop-config
      :cmd? false})
 
-   [:h2 {:id "tools"} "Tool catalog"]
+   [:h2 {:id "tools"} "Tool Catalog"]
    [:p
     "30+ tools across discovery, querying, pipeline control, introspection, "
     "and benchmarks. All return JSON; most accept the repo name or path as the "

@@ -15,7 +15,7 @@
   (let [queries (parse/all)]
     [:section.docs
      [:div.container
-      [:h1.docs-title "Query catalog"]
+      [:h1.docs-title "Query Catalog"]
       [:p.lead
        (count queries) " named Datalog queries shipped with Noumenon. "
        "Run with " [:code "noum query <name> [args...]"]

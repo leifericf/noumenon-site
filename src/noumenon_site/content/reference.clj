@@ -2,10 +2,12 @@
   "Reference hub.")
 
 (def cards
-  [{:href "/queries/" :title "Queries"
+  [{:href "/cli/" :title "CLI"
+    :body "Every noum subcommand grouped by purpose."}
+   {:href "/queries/" :title "Queries"
     :body "Catalog of named Datalog queries, generated from the source repo."}
    {:href "/api/" :title "HTTP API"
-    :body "OpenAPI spec rendered with Scalar."}
+    :body "Daemon endpoints grouped by purpose, parsed from the OpenAPI spec."}
    {:href "/mcp/" :title "MCP"
     :body "Model Context Protocol setup and tool list."}])
 

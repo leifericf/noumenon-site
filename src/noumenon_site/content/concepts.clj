@@ -2,12 +2,14 @@
   "Concepts hub.")
 
 (def cards
-  [{:href "/concepts/knowledge-graph/" :title "Knowledge graph"
+  [{:href "/concepts/knowledge-graph/" :title "Knowledge Graph"
     :body "Three levels of structure compiled from your repo."}
    {:href "/concepts/pipeline/" :title "Pipeline"
     :body "Five stages from import through synthesis."}
-   {:href "/concepts/source-control/" :title "Source control"
+   {:href "/concepts/source-control/" :title "Source Control"
     :body "Native git plus Perforce via git-p4. Same graph either way."}
+   {:href "/concepts/data-safety/" :title "Data Safety"
+    :body "What's filtered, what's analyzed, and what reaches the LLM."}
    {:href "/concepts/introspect/" :title "Introspect"
     :body "Autonomous loop that improves the graph over time."}
    {:href "/concepts/benchmarks/" :title "Benchmarks"

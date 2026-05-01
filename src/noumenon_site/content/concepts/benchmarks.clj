@@ -37,7 +37,7 @@
 
 (defn- prose-body []
   [:div.prose
-   [:h2 {:id "headline"} "Headline numbers"]
+   [:h2 {:id "headline"} "Headline Numbers"]
    (stat-cards)
 
    [:h2 {:id "methodology"} "Methodology"]
@@ -48,7 +48,7 @@
     "Same model and same evaluator across both runs. Token counts are input "
     "tokens only. Speed is wall-clock time per question."]
 
-   [:h2 {:id "full-table"} "Per-repository results"]
+   [:h2 {:id "full-table"} "Per-Repository Results"]
    [:table.benchmark-table
     [:thead
      [:tr

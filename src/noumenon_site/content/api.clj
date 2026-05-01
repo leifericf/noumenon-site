@@ -47,7 +47,7 @@
   (let [grouped (by-group endpoints)
         order   (map first groups)]
     [:div.prose
-     [:h2 {:id "endpoints"} (str (count endpoints) " endpoints")]
+     [:h2 {:id "endpoints"} (str (count endpoints) " Endpoints")]
      [:p
       "Every endpoint returns JSON envelope " [:code "{ok, data}"] " or "
       [:code "{ok:false, error}"] ". Long-running POSTs stream progress as "

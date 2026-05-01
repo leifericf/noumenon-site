@@ -55,7 +55,7 @@
 
 (defn- pipeline-glance []
   (section {:id "pipeline-glance" :alt true :centered true}
-           [:h2.section-title "Five stages, then queries"]
+           [:h2.section-title "Five Stages, Then Queries"]
            [:p.section-sub
             "Each stage builds on the last. "
             [:a {:href "/concepts/pipeline/"} "Read the full pipeline →"]]
@@ -65,22 +65,22 @@
 
 (defn- benchmark-stats []
   (section {:id "stats" :centered true}
-           [:h2.section-title "Measured on real codebases"]
+           [:h2.section-title "Measured on Real Codebases"]
            [:p.section-sub
             "40 questions per repo, 8 repos, 7 languages. "
             [:a {:href "/concepts/benchmarks/"} "See the full table →"]]
            [:div.layers-grid
             (r/card {:variant :green :class "benchmark-stat"}
                     [:span.stat-number (h/raw "2.7&times;")]
-                    [:h3 "More accurate"]
+                    [:h3 "More Accurate"]
                     [:p "20% → 53% mean score"])
             (r/card {:variant :green :class "benchmark-stat"}
                     [:span.stat-number "55% faster"]
-                    [:h3 "Less waiting"]
+                    [:h3 "Less Waiting"]
                     [:p "13.6s → 6.1s per question"])
             (r/card {:variant :green :class "benchmark-stat"}
                     [:span.stat-number "80% cheaper"]
-                    [:h3 "Fewer tokens"]
+                    [:h3 "Fewer Tokens"]
                     [:p "37K → 7K input tokens"])]))
 
 (defn- step [n title code hint]
@@ -93,12 +93,12 @@
 
 (defn- thirty-seconds []
   (section {:id "thirty-seconds" :alt true :centered true}
-           [:h2.section-title "30 seconds to start"]
+           [:h2.section-title "30 Seconds to Start"]
            [:div.steps
             (step 1 "Install"
                   "curl -sSL https://noumenon.leifericf.com/install | bash"
                   [:span "Also via " [:a {:href "/get-started/"} "Homebrew, Scoop, Docker"] "."])
-            (step 2 "Run the demo"
+            (step 2 "Run the Demo"
                   "noum demo"
                   "Pre-built knowledge graph. No LLM credentials needed.")
             (step 3 "Ask"
@@ -107,19 +107,19 @@
 
 (defn- explore []
   (section {:id "explore" :centered true}
-           [:h2.section-title "Where to next"]
+           [:h2.section-title "Where to Next"]
            [:div.hub-grid
             [:a.hub-card {:href "/get-started/"}
              [:h3 "Install"]
              [:p "Quickstart, package managers, and LLM provider setup."]]
             [:a.hub-card {:href "/concepts/"}
-             [:h3 "How it works"]
+             [:h3 "How It Works"]
              [:p "Knowledge graph levels, the pipeline, introspection, and benchmarks."]]
             [:a.hub-card {:href "/queries/"}
-             [:h3 "Query catalog"]
+             [:h3 "Query Catalog"]
              [:p "Browse 90+ named Datalog queries shipped with Noumenon."]]
             [:a.hub-card {:href "/mcp/"}
-             [:h3 "MCP integration"]
+             [:h3 "MCP Integration"]
              [:p "Use Noumenon from Claude Desktop, Claude Code, or any MCP client."]]]))
 
 (defn landing-page []
