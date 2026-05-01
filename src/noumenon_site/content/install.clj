@@ -34,7 +34,14 @@
       [:h3 "Run the Demo"]
       [:code "noum demo"]
       [:p.step-hint
-       "Pre-built knowledge graph with sample questions. No LLM credentials needed."]]]
+       "Downloads a pre-built knowledge graph for the noumenon repo "
+       "itself (Noumenon imports its own source as the demo). The "
+       "tarball is fetched from GitHub Releases, SHA256-verified, and "
+       "extracted into " [:code "~/.noumenon/data/"] ". No LLM "
+       "credentials needed for queries — the analyze stage is already done."]
+      [:p.step-hint "Try:"]
+      [:pre [:code {:data-lang "bash"}
+             "noum ask noumenon \"What are the major components?\"\nnoum ask noumenon \"Which files have the most churn?\"\nnoum query hotspots noumenon"]]]]
     [:div.step
      [:div.step-number 3]
      [:div.step-content
@@ -79,10 +86,11 @@
      "interface. Repos and ask sessions populate from live data, so there's "
      "nothing to memorize."]
     [:li
-     [:strong "Visual desktop UI."]
-     " " [:code "noum open"] " launches an Electron app with a "
-     "force-directed graph, three-level drill-down, and a floating Ask "
-     "overlay. The launcher downloads the packaged app on first use."]
+     [:strong "Desktop UI (experimental)."]
+     " " [:code "noum open"] " auto-downloads an early Electron preview "
+     "with a graph view, drill-down, and a floating Ask overlay. Very "
+     "rough — fine for poking around, not for daily driving. See "
+     [:a {:href "/concepts/desktop-ui/"} "Desktop UI"] "."]
     [:li
      [:strong "Model Context Protocol."]
      " " [:code "noum setup desktop"] " or " [:code "noum setup code"]

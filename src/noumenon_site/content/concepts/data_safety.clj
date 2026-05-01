@@ -82,12 +82,43 @@
      " prompts, examples, and benchmark scores. No user code beyond the "
      "fixed benchmark question set."]]
 
+   [:h2 {:id "runtime-modes"} "Runtime Modes"]
+   [:p
+    [:code "NOUMENON_RUNTIME_MODE"] " controls how aggressively the daemon "
+    "guards secrets. Two values:"]
+   [:ul
+    [:li
+     [:strong [:code "local"]]
+     " (default). Fine for laptop use. Provider credentials can fall back "
+     "to trusted on-disk locations (e.g. " [:code "~/.noumenon/credentials.edn"]
+     ") if a process env var isn't set, and provider base URLs can be HTTP."]
+    [:li
+     [:strong [:code "service"]]
+     ". The mode any shared deployment should run in. File-based credential "
+     "fallback is disabled — secrets must come from the process environment. "
+     "Provider base URLs are required to be HTTPS; HTTP URLs are rejected at "
+     "startup."]]
+   [:p
+    [:code "NOUMENON_LLM_BASE_URL_ALLOWLIST_EDN"] " is an optional EDN list "
+    "of permitted hostnames or simple patterns. When set, provider base "
+    "URLs whose host isn't on the list are rejected before any request "
+    "goes out. Defense in depth against a misconfigured provider entry "
+    "leaking traffic to an unintended host."]
+   [:p
+    "See " [:a {:href "/server/"} "Run as a shared service"] " for how to "
+    "wire these into a Docker deployment."]
+
    [:h2 {:id "transparency"} "Cost Transparency"]
    [:p
     "Every LLM call is recorded in Datomic with provider, model, prompt token "
     "count, completion tokens, and cost. Per-file telemetry streams while "
-    "analyze runs; totals land in the graph when it finishes. Query historical "
-    "spend with " [:code "noum query llm-cost-total"] " or via MCP."]
+    "analyze runs; totals land in the graph when it finishes."]
+   [:p "Query historical spend by named query:"]
+   [:pre [:code {:data-lang "bash"}
+          "$ noum query llm-cost-total noumenon\nprovider  model           calls   in-tokens   out-tokens   cost-usd\nglm       glm-4-plus      218     412,300     38,150       1.84\nclaude    sonnet          47      94,820      11,200       0.62"]]
+   [:p
+    "The same data is reachable through "
+    [:code "noumenon_query"] " over MCP and through the HTTP API."]
 
    [:div.callout
     [:p

@@ -37,7 +37,7 @@
     :items
     [["setup"       "Configure MCP for Claude Desktop or Claude Code."]
      ["serve"       "Start the MCP server over stdin/stdout (for clients to spawn)."]
-     ["open"        "Open the Electron desktop UI: force-directed graph, drill-down, floating Ask."]]}
+     ["open"        "Open the experimental Electron desktop UI. See /concepts/desktop-ui/."]]}
    {:heading "LLM and Provider Config"
     :id "providers"
     :items
@@ -113,7 +113,16 @@
    (for [{:keys [heading id items]} groups]
      [:div
       [:h2 {:id id} heading]
-      (group-table items)])
+      (group-table items)
+      (when (= id "query-ask")
+        [:div.callout
+         [:p
+          "Cost is queryable. " [:code "noum query llm-cost-total <repo>"]
+          " breaks spend down by provider and model; " [:code "noum status <repo>"]
+          " gives a live snapshot. The same shape is reachable through "
+          [:code "noumenon_query"] " over MCP and the HTTP API. See "
+          [:a {:href "/concepts/data-safety/#transparency"} "Cost Transparency"]
+          "."]])])
 
    [:div.callout
     [:p

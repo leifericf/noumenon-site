@@ -20,8 +20,8 @@
      "every reader benefits."]
     [:li
      [:strong "Always-fresh data."]
-     " The server polls for changes (or accepts webhooks from GitHub/GitLab) "
-     "so the graph stays current without anyone running " [:code "noum update"] "."]
+     " Webhooks or a polling loop keep the graph current without anyone "
+     "running " [:code "noum update"] "."]
     [:li
      [:strong "No client setup beyond a token."]
      " " [:code "noum connect <url> --token <t>"] " makes every CLI command "
@@ -45,6 +45,27 @@
     "user identity beyond tokens, no single sign-on, no cross-instance graph "
     "sharing. Want a per-team or per-product split? Run multiple instances; "
     "they don't know about each other."]
+
+   [:h2 {:id "refresh"} "Webhook Refresh"]
+   [:p
+    "Point GitHub or GitLab at " [:code "/api/webhook"] " and the daemon "
+    "re-imports on every push. Set " [:code "NOUMENON_WEBHOOK_SECRET"]
+    " and the server verifies the HMAC signature ("
+    [:code "X-Hub-Signature-256"] " on GitHub, "
+    [:code "X-Gitlab-Token"] " on GitLab) before doing anything."]
+   [:p
+    "If webhooks aren't an option, the server falls back to a polling "
+    "loop on " [:code "NOUMENON_POLL_INTERVAL"] " minutes. Set it to "
+    [:code "0"] " to disable polling entirely (recommended once webhooks "
+    "are wired up). The configuration table and the exact request shape "
+    "are in the Webhook Setup section of the deploy guide below."]
+
+   [:p
+    "Hardening tip: run with " [:code "NOUMENON_RUNTIME_MODE=service"]
+    " so provider credentials are env-only and provider base URLs are "
+    "required to be HTTPS. See "
+    [:a {:href "/concepts/data-safety/#runtime-modes"} "Runtime Modes"]
+    "."]
 
    [:h2 {:id "ops"} "Day-Two Operations"]
    [:p

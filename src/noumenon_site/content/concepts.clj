@@ -6,6 +6,8 @@
     :body "Three levels of structure compiled from your repo."}
    {:href "/concepts/pipeline/" :title "Pipeline"
     :body "Five stages from import through synthesis."}
+   {:href "/concepts/desktop-ui/" :title "Desktop UI"
+    :body "Experimental Electron preview: graph, drill-down, floating Ask."}
    {:href "/concepts/source-control/" :title "Source Control"
     :body "Native git plus Perforce via git-p4. Same graph either way."}
    {:href "/concepts/data-safety/" :title "Data Safety"

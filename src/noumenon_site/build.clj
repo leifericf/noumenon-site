@@ -16,6 +16,7 @@
             [noumenon-site.content.concepts.benchmarks :as c-benchmarks]
             [noumenon-site.content.concepts.source-control :as c-source-control]
             [noumenon-site.content.concepts.data-safety :as c-data-safety]
+            [noumenon-site.content.concepts.desktop-ui :as c-desktop-ui]
             [noumenon-site.content.reference :as reference]
             [noumenon-site.content.queries :as queries]
             [noumenon-site.content.cli :as cli]
@@ -74,6 +75,10 @@
    "/concepts/data-safety/index.html"
    (render-page {:title "Data safety" :active-page :concepts}
                 c-data-safety/page)
+
+   "/concepts/desktop-ui/index.html"
+   (render-page {:title "Desktop UI" :active-page :concepts}
+                c-desktop-ui/page)
 
    "/reference/index.html"
    (render-page {:title "Reference" :active-page :reference}
