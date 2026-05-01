@@ -1,5 +1,6 @@
 (ns noumenon-site.content.cli
-  "CLI reference page covering the noum launcher commands.")
+  "CLI reference page covering the noum launcher commands."
+  (:require [noumenon-site.render :as render]))
 
 (def groups
   [{:heading "Pipeline"
@@ -111,8 +112,8 @@
     " (or " [:code "stale"] ", or " [:code "all"] ") to refresh."]
 
    (for [{:keys [heading id items]} groups]
-     [:div
-      [:h2 {:id id} heading]
+     [:div.list-section {:id id}
+      [:h2 heading]
       (group-table items)
       (when (= id "query-ask")
         [:div.callout
@@ -138,13 +139,27 @@
       "src/noumenon/main.clj"]
      "."]]])
 
+(defn- sidebar []
+  (render/sidebar-nav
+   [{:heading "On this page"
+     :items [{:href "#interactive" :label "Interactive Mode"}
+             {:href "#selectors"   :label "Pipeline Selectors"}
+             {:href "#drift"       :label "Drift Handling"}]}
+    {:heading "Commands"
+     :items (for [{:keys [heading id items]} groups]
+              {:href            (str "#" id)
+               :data-section-id id
+               :label           (str heading " · " (count items))})}]))
+
 (defn page []
   [:section.docs
-   [:div.container
+   [:div.container-wide
     [:h1.docs-title "CLI"]
     [:p.lead
      "The " [:code "noum"] " launcher is the primary way to drive Noumenon "
      "from a shell. It's the same surface as the HTTP API and MCP tools, "
      "exposed as familiar commands with tab-completion and an interactive "
      "menu when invoked with no arguments."]
-    (prose-body)]])
+    [:div.docs-layout
+     (sidebar)
+     [:div.docs-content (prose-body)]]]])

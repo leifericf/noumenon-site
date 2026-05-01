@@ -76,6 +76,9 @@
   [[:.container {:max-width "1200px"
                  :margin    "0 auto"
                  :padding   "0 1.5rem"}]
+   [:.container-wide {:max-width "1400px"
+                      :margin    "0 auto"
+                      :padding   "0 1.5rem"}]
    [:section {:padding "5rem 0"}]
    [:.section-alt {:background (:bg-alt colors)}]
    [:.divider {:border     "none"
@@ -568,6 +571,46 @@
                      :background  "transparent"
                      :padding     0}]]])
 
+(def docs-layout
+  [[:.docs-layout {:display  "grid"
+                   :grid-template-columns "220px 1fr"
+                   :gap      "3rem"
+                   :align-items "start"}]
+   [:.docs-sidebar {:position    "sticky"
+                    :top         "5rem"
+                    :max-height  "calc(100vh - 6rem)"
+                    :overflow-y  "auto"
+                    :font-size   "0.875rem"
+                    :padding-right "0.5rem"}
+    [:h4 {:font-size      "0.7rem"
+          :font-weight    600
+          :color          (:muted colors)
+          :text-transform "uppercase"
+          :letter-spacing "0.06em"
+          :margin         "1.25rem 0 0.5rem"}
+     [:&:first-child {:margin-top 0}]]
+    [:ul {:list-style "none"
+          :display    "flex"
+          :flex-direction "column"
+          :gap        "0.3rem"
+          :padding    0}]
+    [:li {:list-style "none"}]
+    [:a {:color     (:muted colors)
+         :font-size "0.85rem"}
+     [:&:hover {:color (:text colors)}]]
+    [:a.active {:color (:text colors)}]]
+   [:.docs-content {:min-width 0}
+    ;; Inside the sidebar layout, prose can use the available width.
+    [:.prose {:max-width "none"}]]
+   [:.list-section {:margin-bottom "2rem"}]
+   ;; Mobile collapses to single column.
+   (at-media {:max-width "900px"}
+             [:.docs-layout {:grid-template-columns "1fr" :gap "1.5rem"}]
+             [:.docs-sidebar {:position "static" :max-height "none"
+                              :border-bottom (str "1px solid " (:border colors))
+                              :padding-bottom "1rem"
+                              :margin-bottom "1rem"}])])
+
 (def mermaid-frame
   [[:.mermaid-frame {:padding       "1.5rem"
                      :margin        "1.5rem 0 2rem"
@@ -679,7 +722,7 @@
           sections cards grids pipeline steps showcase
           benchmarks footer
           hub prose tables highlight-css queries-css http-method
-          mermaid-frame schema-table callout toc
+          docs-layout mermaid-frame schema-table callout toc
           mobile))
 
 (defn render

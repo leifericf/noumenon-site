@@ -193,10 +193,30 @@
 
 ;; --- Page assembly ---
 
+(defn sidebar-nav
+  "Sticky sidebar nav. groups is a vec of {:heading :items} where each
+   item is {:href :label :data-section-id?}. The optional
+   :data-section-id lets the filter JS dim links whose target section
+   has been hidden."
+  [groups]
+  [:aside.docs-sidebar
+   (for [{:keys [heading items]} groups]
+     [:div
+      (when heading [:h4 heading])
+      (into [:ul]
+            (for [{:keys [href label data-section-id]} items]
+              [:li [:a (cond-> {:href href}
+                         data-section-id (assoc :data-section-id data-section-id))
+                    label]]))])])
+
 (defn html-page
-  "Render a full HTML page. opts: {:title :description :active-page :show-banner?}.
-   body is Hiccup. :show-banner? defaults true."
-  [{:keys [active-page show-banner?] :or {show-banner? true} :as opts} & body]
+  "Render a full HTML page. opts: {:title :description :active-page
+   :show-banner?}. body is Hiccup. :show-banner? defaults true.
+   Pages that want a wider container for sidebar layouts use
+   .container-wide directly inside their body."
+  [{:keys [active-page show-banner?]
+    :or {show-banner? true}
+    :as opts} & body]
   (str
    "<!DOCTYPE html>\n"
    (h/html

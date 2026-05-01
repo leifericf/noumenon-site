@@ -86,6 +86,23 @@
         }
         row.style.display = match ? '' : 'none';
       });
+      // Hide section wrappers with no visible rows so the page doesn't
+      // turn into a wall of empty headers.
+      document.querySelectorAll('.list-section').forEach(function(section) {
+        if (!q) { section.style.display = ''; return; }
+        var visible = false;
+        section.querySelectorAll('tbody tr').forEach(function(row) {
+          if (row.style.display !== 'none') visible = true;
+        });
+        section.style.display = visible ? '' : 'none';
+      });
+      // Update sidebar links to dim sections that are filtered out.
+      document.querySelectorAll('.docs-sidebar a[data-section-id]').forEach(function(link) {
+        var id = link.getAttribute('data-section-id');
+        var section = document.getElementById(id);
+        if (!section) return;
+        link.style.opacity = (section.style.display === 'none') ? '0.35' : '';
+      });
     });
   }
   attachFilter('queries-filter', '.queries-table tbody tr', ['name', 'desc']);

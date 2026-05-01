@@ -4,7 +4,8 @@
    schema EDN files."
   (:require [clojure.string :as str]
             [hiccup2.core :as h]
-            [noumenon-site.parse.schema :as parse]))
+            [noumenon-site.parse.schema :as parse]
+            [noumenon-site.render :as render]))
 
 (def er-diagram
   ;; Hand-written ER diagram of the core knowledge entities. Auth,
@@ -97,12 +98,25 @@ mermaid.initialize({
    [:td doc]])
 
 (defn- namespace-table [[ns attrs]]
-  [:div
-   [:h3 {:id (str "ns-" ns)} (str ":" ns "/")]
+  [:div.list-section {:id (str "ns-" ns)}
+   [:h3 (str ":" ns "/")]
    [:table.schema-table
     [:thead
      [:tr [:th "Attribute"] [:th "Type"] [:th "Card."] [:th "Unique"] [:th "What it means"]]]
     (into [:tbody] (map attr-row attrs))]])
+
+(defn- sidebar [grouped]
+  (render/sidebar-nav
+   [{:heading "On this page"
+     :items [{:href "#diagram"       :label "Entity Diagram"}
+             {:href "#two-databases" :label "Two Databases"}
+             {:href "#traversal"     :label "Traversal"}
+             {:href "#attributes"    :label "Attribute Reference"}]}
+    {:heading "Namespaces"
+     :items (for [[ns _] grouped :when (seq ns)]
+              {:href (str "#ns-" ns)
+               :label (str ":" ns "/")
+               :data-section-id (str "ns-" ns)})}]))
 
 (defn- prose-body [attrs]
   (let [grouped    (parse/by-namespace attrs)
@@ -180,13 +194,15 @@ mermaid.initialize({
 (defn page []
   (let [attrs (parse/all)]
     [:section.docs
-     [:div.container
+     [:div.container-wide
       [:h1.docs-title "Schema"]
       [:p.lead
        "Noumenon stores everything it knows in one Datomic database per "
        "repo. The picture below is the entity graph; the table beneath it "
        "is every attribute, parsed from the upstream EDN files at build time."]
       (if (seq attrs)
-        (prose-body attrs)
+        [:div.docs-layout
+         (sidebar (parse/by-namespace attrs))
+         [:div.docs-content (prose-body attrs)]]
         [:p [:em "Schema source not available."]])
       [:script {:type "module"} (h/raw mermaid-init)]]]))

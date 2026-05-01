@@ -1,6 +1,7 @@
 (ns noumenon-site.content.mcp
   "MCP setup walkthroughs + tool list."
-  (:require [hiccup2.core :as h]))
+  (:require [hiccup2.core :as h]
+            [noumenon-site.render :as render]))
 
 (def desktop-config
   "{
@@ -76,9 +77,12 @@
    [:p [:strong "Config path: "] [:code config-path]]
    (code-block "json" config-body)])
 
+(defn- tool-slug [section]
+  (str "tools-" (-> section .toLowerCase (.replace " " "-"))))
+
 (defn- tool-section [{:keys [section items]}]
-  [:div
-   [:h3 {:id (str "tools-" (.toLowerCase section))} section]
+  [:div.list-section {:id (tool-slug section)}
+   [:h3 (str section " · " (count items))]
    [:table.md-table
     [:thead [:tr [:th "Tool"] [:th "Purpose"]]]
     (into [:tbody]
@@ -149,12 +153,29 @@
      "MCP tool schemas are part of the OpenAPI mirror under "
      [:a {:href "/api/"} "HTTP API"] ". Same shapes, both surfaces."]]])
 
+(defn- sidebar []
+  (render/sidebar-nav
+   [{:heading "On this page"
+     :items [{:href "#setup"          :label "Setup"}
+             {:href "#setup-desktop"  :label "Claude Desktop"}
+             {:href "#setup-code"     :label "Claude Code"}
+             {:href "#setup-generic"  :label "Any MCP Client"}
+             {:href "#tools"          :label "Tool Catalog"}
+             {:href "#search-vs-ask"  :label "Cheap / Medium / Expensive"}]}
+    {:heading "Tool Categories"
+     :items (for [{:keys [section items]} tools]
+              {:href            (str "#" (tool-slug section))
+               :data-section-id (tool-slug section)
+               :label           (str section " · " (count items))})}]))
+
 (defn page []
   [:section.docs
-   [:div.container
+   [:div.container-wide
     [:h1.docs-title "Model Context Protocol"]
     [:p.lead
      "Noumenon exposes its knowledge graph as MCP tools so AI agents can query "
      "structured facts instead of scanning raw source. Works with Claude Desktop, "
      "Claude Code, or any MCP client."]
-    (prose-body)]])
+    [:div.docs-layout
+     (sidebar)
+     [:div.docs-content (prose-body)]]]])
