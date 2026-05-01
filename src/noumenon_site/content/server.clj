@@ -36,6 +36,15 @@
     " to a random secret, and you're done. Front it with Caddy or Nginx "
     "if you want TLS and a public hostname."]
    [:p
+    "The image is 167 MB. It runs Alpine plus a custom seven-module "
+    "JRE built with " [:code "jlink"]
+    " (just " [:code "java.base"] ", " [:code "java.logging"] ", "
+    [:code "java.naming"] ", " [:code "java.sql"] ", "
+    [:code "java.xml"] ", " [:code "java.management"] ", and "
+    [:code "jdk.unsupported"]
+    "); the only runtime dependency outside the JVM is " [:code "git"]
+    " from Alpine's package repo."]
+   [:p
     "Two roles. The admin token registers repos, mints reader tokens, and "
     "triggers re-imports. Reader tokens are read-only. Raw tokens are shown "
     "once at creation; only their SHA-256 hashes are stored in the Datomic "
@@ -46,6 +55,14 @@
     "user identity beyond tokens, no single sign-on, no cross-instance graph "
     "sharing. Want a per-team or per-product split? Run multiple instances; "
     "they don't know about each other."]
+   [:p
+    "Datomic Local backs the default deployment with on-disk storage. For "
+    "deployments that need full ACID durability across nodes — replication, "
+    "backups against managed object stores, multi-AZ — "
+    [:a {:href "https://www.datomic.com/get-datomic.html"} "Datomic Pro"]
+    " (free) supports PostgreSQL, DynamoDB, and Cassandra storage. The "
+    "Noumenon codebase uses the Datomic client API, so swapping storage "
+    "is a configuration change, not a code change."]
 
    [:h2 {:id "refresh"} "Webhook Refresh"]
    [:p

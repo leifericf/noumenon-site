@@ -6,6 +6,8 @@
     :body "Three levels of structure compiled from your repo."}
    {:href "/concepts/pipeline/" :title "Pipeline"
     :body "Five stages from import through synthesis."}
+   {:href "/concepts/ask/" :title "Ask"
+    :body "Iterative agent with TF-IDF warm start, routing-model hints, and self-reflection."}
    {:href "/concepts/desktop-ui/" :title "Desktop UI"
     :body "Experimental Electron preview: graph, drill-down, floating Ask."}
    {:href "/concepts/source-control/" :title "Source Control"

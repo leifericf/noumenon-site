@@ -14,6 +14,7 @@
             [noumenon-site.content.concepts.pipeline :as c-pipeline]
             [noumenon-site.content.concepts.introspect :as c-introspect]
             [noumenon-site.content.concepts.benchmarks :as c-benchmarks]
+            [noumenon-site.content.concepts.ask :as c-ask]
             [noumenon-site.content.concepts.source-control :as c-source-control]
             [noumenon-site.content.concepts.data-safety :as c-data-safety]
             [noumenon-site.content.concepts.desktop-ui :as c-desktop-ui]
@@ -68,6 +69,10 @@
    "/concepts/benchmarks/index.html"
    (render-page {:title "Benchmarks" :active-page :concepts}
                 c-benchmarks/page)
+
+   "/concepts/ask/index.html"
+   (render-page {:title "Ask" :active-page :concepts}
+                c-ask/page)
 
    "/concepts/source-control/index.html"
    (render-page {:title "Source control" :active-page :concepts}

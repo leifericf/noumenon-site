@@ -118,6 +118,29 @@
     "Twenty-five tools across discovery, querying, pipeline control, "
     "introspection, and benchmarks. All return JSON; most accept the repo "
     "name or path as the first argument."]
+
+   [:h3 {:id "search-vs-ask"} "Cheap, Medium, Expensive"]
+   [:p
+    "The three tools that surface knowledge from a digested repo sit on "
+    "a clear cost gradient. Reach for the cheapest one that does the job."]
+   [:ul
+    [:li
+     [:strong [:code "noumenon_search"] " — milliseconds, zero LLM calls. "]
+     "TF-IDF cosine similarity over per-file and per-component "
+     "summaries. Returns ranked file paths with scores. The cheapest "
+     "way to find \"which files are about X.\" Use this when you want "
+     "discovery without the price of a full agent loop."]
+    [:li
+     [:strong [:code "noumenon_query"] " — milliseconds, zero LLM calls. "]
+     "Run a named or raw Datalog query. The right tool when you know "
+     "the question maps to existing structure (\"hotspots,\" \"files-by-layer,\" "
+     "\"top-contributors\") and want the structured result back."]
+    [:li
+     [:strong [:code "noumenon_ask"] " — seconds, multiple LLM calls. "]
+     "Iterative agent. TF-IDF warm start, routing-model hint, then a "
+     "loop over Datalog queries until it has enough to answer. Use when "
+     "the question is open-ended or requires composing multiple facts. "
+     "See " [:a {:href "/concepts/ask/"} "Ask"] " for how it works."]]
    (for [section tools]
      (tool-section section))
 

@@ -47,12 +47,50 @@
    [:div {:style "margin: 1.25rem 0;"}
     (apply r/terminal introspect-terminal-body)]
 
+   [:h2 {:id "signals"} "Signals from Ask Sessions"]
+   [:p
+    "Benchmarks are not the only input. The optimizer's meta-prompt "
+    "also includes a " [:code "{{ask-insights}}"]
+    " block aggregated from real Ask sessions in the meta database. "
+    "Three streams feed it:"]
+   [:ul
+    [:li
+     [:strong "Agent self-reflection. "]
+     "When the " [:a {:href "/concepts/ask/#reflect"} "Ask agent"]
+     " emits " [:code ":missing-attributes"] ", "
+     [:code ":quality-issues"] ", and " [:code ":suggested-queries"]
+     " on a session, those are aggregated by frequency. \"Function "
+     "dependencies (reported 10×)\" becomes a signal to add a schema "
+     "attribute. \"Empty commit messages (reported 7×)\" signals a "
+     "data-quality issue."]
+    [:li
+     [:strong "Telemetry queries. "]
+     [:code "ask-empty-results"] " surfaces queries that returned "
+     "nothing — gaps in the data model. " [:code "ask-popular-queries"]
+     " surfaces patterns the LLM writes most often — candidates for "
+     "named queries with optimized descriptions in the system prompt. "
+     [:code "ask-error-steps"] " surfaces parse failures — signals "
+     "for prompt improvements."]
+    [:li
+     [:strong "Explicit feedback. "]
+     "Thumbs-up/thumbs-down on a past session is recorded on "
+     [:code ":ask.session/feedback"]
+     ". Negative feedback is surfaced first in the meta-prompt."]]
+   [:p
+    "The result is a closed loop: agents try to answer questions, "
+    "tell the system what's missing or broken, and introspect "
+    "proposes the fix on the next run. Real questions are a higher-"
+    "quality signal than synthetic benchmarks because they reflect "
+    "what people actually need."]
+
    [:div.callout
     [:p
      "Run " [:code "noum introspect <repo> --help"] " for the full flag set, "
      "or invoke the MCP equivalents: " [:code "noumenon_introspect"]
      ", " [:code "noumenon_introspect_start"] ", and "
-     [:code "noumenon_introspect_status"] "."]]])
+     [:code "noumenon_introspect_status"] ". The Ask agent's side of "
+     "the loop lives at "
+     [:a {:href "/concepts/ask/"} "Ask"] "."]]])
 
 (defn page []
   [:section.docs

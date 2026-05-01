@@ -118,6 +118,32 @@ mermaid.initialize({
      [:div.mermaid-frame
       [:pre.mermaid (h/raw er-diagram)]]
 
+     [:h2 {:id "two-databases"} "Two Databases per Instance"]
+     [:p
+      "Every Noumenon instance hosts two kinds of database. "
+      [:strong "Per-repo databases"]
+      " hold facts derived from a specific repository: commits, files, "
+      "code segments, components, the import graph, the TF-IDF index. "
+      "One per imported repo. Identity is derived from the repo path or "
+      "URL. Schema files: " [:code "core.edn"] ", "
+      [:code "architecture.edn"] ", " [:code "synthesis.edn"]
+      ", " [:code "provenance.edn"] "."]
+     [:p
+      "The " [:strong [:code "noumenon-internal"]]
+      " meta database holds cross-cutting facts about Noumenon itself: "
+      "introspect runs, ask sessions and feedback, named-query "
+      "artifacts, prompts, auth tokens, settings. One per instance, "
+      "fixed name. A prompt change affects every repo, so its history "
+      "belongs in one place rather than fragmented per-repo. Schema "
+      "files: " [:code "ask.edn"] ", " [:code "benchmark.edn"]
+      ", " [:code "introspect.edn"] ", " [:code "artifacts.edn"]
+      ", " [:code "auth.edn"] ", " [:code "settings.edn"] "."]
+     [:p
+      "Both run on the same Datomic Local storage and share the same "
+      "schema-attribute namespace. The split is conceptual: "
+      [:em "facts about your code"] " versus "
+      [:em "facts about how Noumenon answered questions about your code"] "."]
+
      [:h2 {:id "traversal"} "Traversing in Both Directions"]
      [:p
       "Datomic refs are stored once but queried both ways. Forward, you name "

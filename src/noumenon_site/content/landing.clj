@@ -37,10 +37,11 @@
     [:p.hero-sub
      "Compile your repository into a "
      [:a {:href "https://www.datomic.com"} "Datomic"]
-     " knowledge graph. AI agents query structured facts instead of scanning raw source. "
-     [:strong "2.7× more accurate"] ", "
-     [:strong "80% cheaper"] ", and "
-     [:strong "55% faster"] " across 8 repos."]
+     " knowledge graph. AI agents query structured facts instead of "
+     "scanning raw source. "
+     [:strong "1.3× more accurate"] " across 9 repos in 7 languages, "
+     "with a TF-IDF tier that delivers most of the lift at "
+     [:strong "3.7× better quality per input token"] "."]
     [:div.hero-actions
      [:a.btn.btn-primary   {:href "/get-started/"} "Get started"]
      [:a.btn.btn-secondary {:href "https://github.com/leifericf/noumenon"} "View on GitHub"]]
@@ -67,21 +68,21 @@
   (section {:id "stats" :centered true}
            [:h2.section-title "Measured on Real Codebases"]
            [:p.section-sub
-            "40 questions per repo, 8 repos, 7 languages. "
+            "40 questions per repo, 9 repos, 7 languages. "
             [:a {:href "/concepts/benchmarks/"} "See the full table →"]]
            [:div.layers-grid
             (r/card {:variant :green :class "benchmark-stat"}
-                    [:span.stat-number (h/raw "2.7&times;")]
+                    [:span.stat-number (h/raw "1.3&times;")]
                     [:h3 "More Accurate"]
-                    [:p "20% → 53% mean score"])
+                    [:p "Without 47.7% → With 62.0% mean across 9 repos"])
             (r/card {:variant :green :class "benchmark-stat"}
-                    [:span.stat-number "55% faster"]
-                    [:h3 "Less Waiting"]
-                    [:p "13.6s → 6.1s per question"])
+                    [:span.stat-number (h/raw "3.7&times;")]
+                    [:h3 "Better Per Token"]
+                    [:p "TF-IDF tier vs full KG"])
             (r/card {:variant :green :class "benchmark-stat"}
-                    [:span.stat-number "80% cheaper"]
-                    [:h3 "Fewer Tokens"]
-                    [:p "37K → 7K input tokens"])]))
+                    [:span.stat-number "9 repos"]
+                    [:h3 "Seven Languages"]
+                    [:p "Same 40 questions per repo"])]))
 
 (defn- step [n title code hint]
   [:div.step

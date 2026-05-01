@@ -104,6 +104,7 @@
     :links [{:href "/concepts/"                     :label "Concepts"}
             {:href "/concepts/knowledge-graph/"     :label "Knowledge graph"}
             {:href "/concepts/pipeline/"            :label "Pipeline"}
+            {:href "/concepts/ask/"                 :label "Ask"}
             {:href "/concepts/desktop-ui/"          :label "Desktop UI"}
             {:href "/concepts/source-control/"      :label "Source control"}
             {:href "/concepts/data-safety/"         :label "Data safety"}

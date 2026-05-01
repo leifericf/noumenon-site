@@ -51,7 +51,58 @@
     [:a {:href "/queries/"} "catalog of 90+ named queries"]
     " covering hotspots, dependency analysis, contributor graphs, and more. "
     "Pose natural-language questions with " [:code "noum ask"] ", or invoke "
-    "queries directly from the CLI, HTTP API, or MCP."]])
+    "queries directly from the CLI, HTTP API, or MCP."]
+
+   [:h2 {:id "vs-rag"} "Compared to RAG"]
+   [:p
+    "Retrieval-Augmented Generation (RAG) systems use vector "
+    "similarity to find relevant documents before the LLM sees them. "
+    "Noumenon's knowledge graph is a different shape: it stores facts "
+    "and relationships as queryable structure, not chunks and "
+    "embeddings. The two are complementary, not opposed."]
+   [:table.md-table
+    [:thead [:tr [:th "Job"] [:th "RAG is good at"] [:th "Knowledge graph is good at"]]]
+    [:tbody
+     [:tr
+      [:td "Discovery"]
+      [:td "Fuzzy lexical/semantic match. \"Files about authentication\""]
+      [:td "Bad without a hint; the agent has to guess where to look."]]
+     [:tr
+      [:td "Relationships"]
+      [:td "Implicit, by chunk proximity. Often wrong on \"what depends on X.\""]
+      [:td "Explicit. \"Which components depend on auth-system\" is a one-line query."]]
+     [:tr
+      [:td "Composition"]
+      [:td "Hard. Combining \"about auth\" with \"changed in last 30 days\" requires reranking."]
+      [:td "Datalog joins. Combine arbitrary facts with no extra machinery."]]
+     [:tr
+      [:td "Reproducibility"]
+      [:td "Embeddings drift between models and quantizations."]
+      [:td "Same query, same database state, same answer."]]]]
+   [:p
+    "Noumenon does both. The TF-IDF retrieval tier in the analyze "
+    "pipeline gives the "
+    [:a {:href "/concepts/ask/"} "Ask agent"]
+    " a RAG-style warm start (\"where to look\"); the Datalog graph "
+    "handles relationships and composition (\"how everything connects\")."]
+
+   [:h2 {:id "time-travel"} "Time Travel"]
+   [:p
+    "Datomic stores every transaction immutably and tags it with a "
+    [:code "basis-t"]
+    ". Old facts are not overwritten; they're superseded by newer "
+    "facts at later transaction points. Any query can run \"as of\" "
+    "any past basis."]
+   [:p
+    "This shows up two places: the HTTP API exposes "
+    [:code "POST /api/query-as-of"]
+    " with an ISO-8601 or epoch-ms parameter, and benchmark and "
+    "introspect runs record the " [:code "basis-t"]
+    " of the database they ran against. Reproducing a benchmark from "
+    "six months ago means restoring the agent's prompt and "
+    "re-querying the database " [:code "as-of"]
+    " that same basis. The graph keeps its own history; we don't "
+    "have to."]])
 
 (defn page []
   [:section.docs
