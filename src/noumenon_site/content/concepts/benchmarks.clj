@@ -72,10 +72,13 @@
     "10,000 characters. Total context is capped at the API budget — when the "
     "budget runs out, the remaining files are dropped from the tail."]
    [:p
-    "This is the steel-man for raw-LLM use of a repo: more or less what "
-    "happens when you point a context-window-pumping tool at a project and "
-    "ask it questions. It is not a strawman like \"empty context\" or \"only "
-    "the README\"."]
+    "This is more honest than \"empty context\" or \"only the README,\" but "
+    "it is not the strongest baseline you could build. A developer using "
+    "Claude Code or Cursor against the same repo would let the model call "
+    [:code "read_file"] " and " [:code "grep"]
+    " on demand instead of pasting everything up front. We have not "
+    "benchmarked against that baseline. Take the \"without\" condition as "
+    "\"raw paste,\" not \"best you can do without Noumenon.\""]
 
    [:h3 {:id "with"} "What \"With\" Means"]
    [:p
@@ -170,19 +173,100 @@
      "Wall-clock per question, from prompt-sent to answer-received. Network "
      "and provider queueing are included; the judge pass is not."]]
 
-   [:h3 {:id "limits"} "What This Doesn't Measure"]
+   [:h3 {:id "flaws"} "Known Flaws and Limitations"]
+   [:p
+    "The point of this section is to be specific, not to wave a hand at "
+    "uncertainty. Anyone reading the headline numbers should also read this "
+    "list."]
    [:ul
     [:li
-     "Real agentic workflows. " [:code "noum ask"]
-     " in production seeds with TF-IDF, calls tools, and refines across "
-     "turns. The benchmark deliberately holds that loop still."]
+     [:strong "The \"with\" condition is given a pre-computed answer. "]
+     "Every question carries a " [:code ":query-name"]
+     " whose result is, by design, close to the answer. The \"with\" model "
+     "is mostly summarizing a structured result. The \"without\" model is "
+     "asked to find the same fact inside tens of thousands of characters "
+     "of raw source. That is a real design choice in Noumenon's favor, not "
+     "just a context-size difference."]
     [:li
-     "Answer quality beyond the rubric. The judge is good at \"is the "
-     "factual claim right\" and weaker at \"is the prose elegant\"."]
+     [:strong "The question set was written to match existing queries. "]
+     "We have not benchmarked anything Noumenon doesn't already have a "
+     "named query for. Coverage is biased toward questions the pipeline "
+     "produces clean context for. Harder or less-mappable questions are "
+     "absent because they didn't get written, not because the pipeline "
+     "answers them well."]
     [:li
-     "Variance between runs. Reported numbers are from a single run per "
-     "repo. The harness logs the head SHA, the question-set hash, and the "
-     "model so a re-run is reproducible."]]
+     [:strong "Single run per repo, no variance bars. "]
+     "Run-to-run variance from API sampling, judge nondeterminism, and "
+     "concurrent extraction order is not quantified. A repeat of any row "
+     "would land at a slightly different number. \"With\" is reliably "
+     "ahead, but the per-repo gap should not be read past one significant "
+     "figure."]
+    [:li
+     [:strong "The judge is an LLM. "]
+     "LLM-as-judge has well-documented biases: agreement with itself, "
+     "preference for fluent or verbose answers, drift across runs. The "
+     "rubric ships with calibration examples but does not eliminate these. "
+     "We do not currently have a human-graded sample to anchor against."]
+    [:li
+     [:strong "The \"without\" truncation can drop the relevant file. "]
+     "When the raw source exceeds the API budget, the tail of "
+     [:code "git ls-tree"] " is dropped. If the file containing the answer "
+     "is late in that order, the \"without\" run is being scored on a "
+     "context that genuinely cannot answer the question. We do not "
+     "currently report what fraction of questions are affected per repo."]
+    [:li
+     [:strong "The "] [:code "noumenon"]
+     [:strong " repo is in the test set. "]
+     "We benchmark our own codebase as one of the eight repos. The pipeline "
+     "has been iterated on with that data in the loop, so that row is "
+     "double-dipping. We keep it because the trend across the other seven "
+     "repos is what matters, but the 48% figure is not a blind result."]
+    [:li
+     [:strong "Cost excludes the upfront analyze pass. "]
+     "The \"80% cheaper\" number is per-question input tokens to the "
+     "answerer. It does " [:em "not"] " include the LLM tokens spent during "
+     "analyze and synthesize to build the graph. For a one-off question on "
+     "a fresh repo, raw context is cheaper. The break-even depends on how "
+     "many questions you ask per repo before the upfront cost amortizes."]
+    [:li
+     [:strong "Some of the speed gain is trivial. "]
+     "A smaller context block ships faster and decodes faster. Part of the "
+     "55% speed advantage is just \"fewer tokens to process,\" which is a "
+     "consequence of context size, not Noumenon being clever. Provider TTFT "
+     "and decode rates dominate."]
+    [:li
+     [:strong "Deterministic scoring is regex-based. "]
+     "Single-hop scoring checks for file paths or layer keywords appearing "
+     "in the answer text. A correct answer that paraphrases or uses a "
+     "synonym scores wrong. This biases against the \"without\" condition "
+     "less than the \"with\" condition (raw-source answers tend to quote "
+     "filenames verbatim) but the noise is real either way."]
+    [:li
+     [:strong "Garden-path risk in authorship. "]
+     "Both the question set and the named queries were written by the same "
+     "person who wrote Noumenon. Questions probing aspects of code "
+     "understanding the pipeline doesn't do well are likely under-represented "
+     "just because they didn't get written. An external question set would "
+     "be more telling and we don't have one."]
+    [:li
+     [:strong "One model, one temperature. "]
+     "Numbers are from a single answerer model. The lift may shrink with a "
+     "larger frontier model that needs less context-shaping help, or grow "
+     "with a smaller one. We have not swept the model axis."]
+    [:li
+     [:strong "Out of scope entirely: real agentic " [:code "noum ask"] ". "]
+     "The interactive Ask agent in production seeds with TF-IDF, calls "
+     "tools, and refines across turns. The benchmark deliberately holds "
+     "that loop still so the comparison is apples-to-apples on context. "
+     "It is silent on whether agentic Ask is better or worse than "
+     "single-turn KG context."]]
+   [:p
+    "We list these because the alternative is selling the result. The "
+    "knowledge graph has real benefits that survive the caveats: structured "
+    "facts compose, queries are reproducible, and per-question cost is "
+    "predictable once the graph exists. Treat the headline numbers as "
+    "directional and reproduce locally on your own repos before quoting "
+    "them."]
 
    [:h2 {:id "full-table"} "Per-Repository Results"]
    [:table.benchmark-table
@@ -213,5 +297,7 @@
      "We evaluate Noumenon by asking the same 40 questions about 8 repos in "
      "7 languages, with and without the knowledge graph. \"Without\" is raw "
      "source files; \"with\" is Noumenon-mediated context. Same model, same "
-     "prompt template, same judge."]
+     "prompt template, same judge. The numbers below are real, but the "
+     "design choices behind them favor Noumenon in specific ways. See "
+     [:a {:href "#flaws"} "Known Flaws and Limitations"] " before quoting."]
     (prose-body)]])

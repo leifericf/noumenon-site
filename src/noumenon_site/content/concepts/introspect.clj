@@ -18,11 +18,11 @@
    "Introspect complete: 2 improvements in 3 iterations (final score: 68.2%)"])
 
 (def targets
-  [["system-prompt" "Edit the prompt that drives the Ask agent."]
+  [["system-prompt" "Edit the system prompt that drives the Ask agent."]
    ["examples"      "Add, remove, or replace few-shot examples shown to the model."]
    ["rules"         "Adjust derived rules used during query planning."]
-   ["source-code"   "Patch a small region of the Ask agent itself."]
-   ["model-config"  "Swap providers, models, or sampling parameters."]])
+   ["code"          "Patch a small region of the Ask agent's source code."]
+   ["train"         "Retrain the routing model that picks which files and queries to seed before the agent runs."]])
 
 (defn- prose-body []
   [:div.prose

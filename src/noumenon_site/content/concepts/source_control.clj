@@ -20,8 +20,10 @@
    [:p
     "Every Noumenon command that takes a repo argument ("
     [:code "noum digest"] ", " [:code "noum ask"] ", " [:code "noumenon_query"]
-    ", and the HTTP endpoints) accepts any of the four. "
-    "The dispatch is one regex on the input string."]
+    ", and the HTTP endpoints) accepts any of the four. The dispatch is a "
+    "small cond that checks Perforce depot syntax first, then git URL "
+    "shape, then a filesystem path, and falls back to looking the name up "
+    "as an existing database."]
    [:table.md-table
     [:thead [:tr [:th "Input"] [:th "Example"] [:th "What happens"]]]
     (into [:tbody]
@@ -30,16 +32,17 @@
 
    [:h2 {:id "git"} "Git"]
    [:p
-    "Native. Noumenon walks the git object database directly, importing "
-    "commits, authors, file paths, parent edges, and per-commit diffs into "
-    "Datomic. Local repos and remote URLs follow the same code path; URLs "
-    "are cloned once into " [:code "data/repos/"] " and reused on subsequent runs."]
+    "Native. Noumenon shells out to the " [:code "git"]
+    " CLI (no libgit2 or JGit) to extract commits, authors, file paths, "
+    "parent edges, and per-commit diffs, and writes them into Datomic. "
+    "Local repos and remote URLs follow the same code path; URLs are "
+    "cloned once into " [:code "data/repos/"] " and reused on subsequent runs."]
    [:p [:strong "What gets imported:"]]
    [:ul
     [:li "Every commit on the configured branch (default: HEAD)."]
-    [:li "Author name and email, with normalization for common aliases."]
+    [:li "Author name and email as written in the commit. No alias merging or identity unification yet."]
     [:li "Files touched per commit, including renames and deletions."]
-    [:li "Diff summaries (additions, deletions, files changed)."]]
+    [:li "Per-commit additions, deletions, and changed-file lists from " [:code "git log --numstat"] "."]]
    [:p
     "Subsequent " [:code "noum update"] " calls are incremental. "
     "Only commits newer than the last imported HEAD are processed."]

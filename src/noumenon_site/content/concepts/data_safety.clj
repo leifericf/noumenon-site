@@ -110,15 +110,24 @@
 
    [:h2 {:id "transparency"} "Cost Transparency"]
    [:p
-    "Every LLM call is recorded in Datomic with provider, model, prompt token "
-    "count, completion tokens, and cost. Per-file telemetry streams while "
-    "analyze runs; totals land in the graph when it finishes."]
-   [:p "Query historical spend by named query:"]
-   [:pre [:code {:data-lang "bash"}
-          "$ noum query llm-cost-total noumenon\nprovider  model           calls   in-tokens   out-tokens   cost-usd\nglm       glm-4-plus      218     412,300     38,150       1.84\nclaude    sonnet          47      94,820      11,200       0.62"]]
+    "Every LLM call is recorded in Datomic with the model, the input token "
+    "count, the output token count, and an estimated dollar cost. Provider "
+    "and model-source provenance go on the transaction too. Per-file "
+    "telemetry streams while analyze runs; totals land in the graph when "
+    "it finishes."]
+   [:p "Three named queries cover the spend axis:"]
+   [:ul
+    [:li [:code "llm-cost-total"]
+     " sums input tokens, output tokens, and dollars across every recorded call."]
+    [:li [:code "llm-cost-by-model"]
+     " groups the same totals by model."]
+    [:li [:code "llm-cost-by-file"]
+     " gives per-file analyze cost, most expensive first."]]
    [:p
-    "The same data is reachable through "
-    [:code "noumenon_query"] " over MCP and through the HTTP API."]
+    "Each runs through " [:code "noum query <name> <repo>"] ", "
+    [:code "noumenon_query"] " over MCP, or the HTTP API. The dollar "
+    "figure is an " [:em "estimate"] " from a built-in price table — "
+    "directional, not invoice-grade."]
 
    [:div.callout
     [:p

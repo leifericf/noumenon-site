@@ -115,9 +115,9 @@
 
    [:h2 {:id "tools"} "Tool Catalog"]
    [:p
-    "30+ tools across discovery, querying, pipeline control, introspection, "
-    "and benchmarks. All return JSON; most accept the repo name or path as the "
-    "first argument."]
+    "Twenty-five tools across discovery, querying, pipeline control, "
+    "introspection, and benchmarks. All return JSON; most accept the repo "
+    "name or path as the first argument."]
    (for [section tools]
      (tool-section section))
 

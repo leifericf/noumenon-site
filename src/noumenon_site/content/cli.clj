@@ -117,10 +117,13 @@
       (when (= id "query-ask")
         [:div.callout
          [:p
-          "Cost is queryable. " [:code "noum query llm-cost-total <repo>"]
-          " breaks spend down by provider and model; " [:code "noum status <repo>"]
-          " gives a live snapshot. The same shape is reachable through "
-          [:code "noumenon_query"] " over MCP and the HTTP API. See "
+          "Spend is queryable. " [:code "noum query llm-cost-total <repo>"]
+          " sums input tokens, output tokens, and dollars across every "
+          "recorded LLM call; " [:code "llm-cost-by-model"]
+          " and " [:code "llm-cost-by-file"]
+          " break the same totals down. The same queries run through "
+          [:code "noumenon_query"]
+          " over MCP and the HTTP API. See "
           [:a {:href "/concepts/data-safety/#transparency"} "Cost Transparency"]
           "."]])])
 

@@ -96,7 +96,8 @@
      " " [:code "noum setup desktop"] " or " [:code "noum setup code"]
      " wires Noumenon into Claude Desktop or Claude Code. Agents call "
      [:code "noumenon_ask"] ", " [:code "noumenon_query"]
-     ", and 30+ other tools without loading raw source into context. See "
+     ", and a couple dozen other tools without loading raw source into "
+     "context. See "
      [:a {:href "/mcp/"} "MCP setup"] "."]
     [:li
      [:strong "HTTP API."]

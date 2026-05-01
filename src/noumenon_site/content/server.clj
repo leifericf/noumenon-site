@@ -37,9 +37,10 @@
     "if you want TLS and a public hostname."]
    [:p
     "Two roles. The admin token registers repos, mints reader tokens, and "
-    "triggers re-imports. Reader tokens are read-only. Tokens are HMAC-prefix "
-    "values stored in the same Datomic database; rotate them at any time "
-    "without restarting the server."]
+    "triggers re-imports. Reader tokens are read-only. Raw tokens are shown "
+    "once at creation; only their SHA-256 hashes are stored in the Datomic "
+    "meta-database, so leaks of disk state do not leak tokens. Rotate any "
+    "of them at runtime without restarting the daemon."]
    [:p
     "Federated, not multi-tenant. Each instance is independent. There's no "
     "user identity beyond tokens, no single sign-on, no cross-instance graph "
