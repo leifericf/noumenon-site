@@ -48,6 +48,27 @@
     "Selectors apply to " [:code "analyze"] ", " [:code "enrich"]
     ", " [:code "update"] ", and " [:code "digest"] "."]
 
+   [:h2 {:id "promotion"} "Promotion (Content-Addressed Cache)"]
+   [:p
+    [:em "Experimental — interfaces may change between releases."] " "
+    "Before " [:code "analyze"]
+    " calls the LLM on a file, it checks the current database for a "
+    "previously-analyzed file whose " [:code ":file/blob-sha"]
+    " matched the same content under the same "
+    [:code ":prov/prompt-hash"] " and " [:code ":prov/model-version"]
+    ". On a hit, the donor's analysis attrs are copied onto the "
+    "recipient with " [:code ":prov/promoted-from"]
+    " lineage and " [:em "no LLM call is made"] ". The result map "
+    "reports " [:code "files-analyzed"] " alongside "
+    [:code "files-promoted"] " so the cache hit rate is visible."]
+   [:p
+    "Pass " [:code "--no-promote"]
+    " to bypass the cache and always invoke the LLM. Cross-DB "
+    "promotion (a delta promoting from trunk) records the donor's "
+    "db-name in " [:code ":prov/promoted-from-db-name"]
+    " — the foreign tx-id is meaningless in the recipient DB, so the "
+    "ref attr is omitted and the db-name acts as the breadcrumb."]
+
    [:h2 {:id "drift"} "Prompt and Model Drift"]
    [:p
     "When you change a prompt template or switch LLM models, prior analysis "

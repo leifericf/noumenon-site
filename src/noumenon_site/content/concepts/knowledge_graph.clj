@@ -86,6 +86,24 @@
     " a RAG-style warm start (\"where to look\"); the Datalog graph "
     "handles relationships and composition (\"how everything connects\")."]
 
+   [:h2 {:id "branch-aware"} "Branch-Aware Graph"]
+   [:p
+    [:em "Experimental — interfaces may change between releases."] " "
+    "Each database carries the branch it represents — " [:code ":branch/name"]
+    ", " [:code ":branch/kind"] ", " [:code ":branch/vcs"]
+    " — and the repo entity points to its current branch via "
+    [:code ":repo/branch"]
+    ". A hosted instance tracks " [:em "trunk"]
+    "; each developer materializes a sparse " [:em "delta"] " database "
+    "at " [:code "~/.noumenon/deltas/"]
+    " for the local feature branch. Federated queries merge trunk and "
+    "delta in one HTTP roundtrip so answers reflect the working branch. "
+    "Files are also content-addressed via " [:code ":file/blob-sha"]
+    " — analyses promote across blobs with matching prompt + model "
+    "without re-invoking the LLM. See "
+    [:a {:href "/concepts/source-control/#branches"} "Source control"]
+    " for details."]
+
    [:h2 {:id "time-travel"} "Time Travel"]
    [:p
     "Datomic stores every transaction immutably and tags it with a "

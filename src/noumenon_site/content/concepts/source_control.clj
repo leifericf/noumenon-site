@@ -78,6 +78,59 @@
     " followed by " [:code "git p4 rebase"] " before the incremental import, "
     "so new changelists land in the graph the same way new git commits do."]
 
+   [:h2 {:id "branches"} "Branches and Local Deltas"]
+   [:p
+    [:em "Experimental — interfaces may change between releases."] " A "
+    "Noumenon database tracks one branch at a time. Each database carries "
+    "branch metadata (" [:code ":branch/name"] ", " [:code ":branch/kind"]
+    " — " [:code ":trunk"] " / " [:code ":feature"] " / " [:code ":release"]
+    ", " [:code ":branch/vcs"]
+    ") and the repo entity points to the current branch via "
+    [:code ":repo/branch"]
+    ". Trunk is hosted (one shared knowledge graph for the team); a "
+    "developer's working branch lives in a sparse "
+    [:em "delta DB"] " on the developer's own machine."]
+   [:p
+    "When local " [:code "git rev-parse HEAD"]
+    " diverges from the trunk DB's " [:code ":repo/head-sha"] ", "
+    [:code "noum delta-ensure"]
+    " (or POST " [:code "/api/delta/ensure"] ") materializes a delta DB at "
+    [:code "~/.noumenon/deltas/<repo>__<safe-branch>__<basis7>/"]
+    " containing only the files added, modified, or deleted vs the trunk "
+    "basis SHA. Deletions are stored as " [:code ":file/deleted? true"]
+    " tombstones rather than retracted, so federated queries can subtract "
+    "them cleanly."]
+   [:p [:strong "Federated answers."]
+    " A " [:em "federation-safe"]
+    " named query (those flagged " [:code ":federation-safe? true"]
+    " in their EDN) can run merged across trunk and a delta in a single "
+    "HTTP roundtrip via " [:code "/api/query-federated"]
+    ". The server overlays the delta on trunk by injecting "
+    [:code "(not [?file :file/path \"<p>\"])"]
+    " clauses for each delta path, then concatenates the delta's own rows "
+    "on top. The launcher detects divergence automatically and reroutes "
+    [:code "noum query"]
+    " transparently — a yellow banner makes the rerouting observable. "
+    "Disable per-call with " [:code "--no-auto-federate"] " or persistently "
+    "with " [:code "noum settings federation/auto-route false"] "."]
+   [:p [:strong "Why server-side."]
+    " Federation lives in the daemon because the Babashka launcher does "
+    "not carry datomic-client. One HTTP roundtrip beats coordinating "
+    "multiple from a language without direct DB access. Delta DBs require "
+    "a co-located daemon for the same reason — full remote-mode support "
+    "is a future iteration."]
+   [:p [:strong "Throwaway by design."]
+    " Delta DBs are wipe-and-rebuild on schema mismatch or basis drift; "
+    "no migrations runner. " [:code "bb prune-deltas"]
+    " interactively GCs orphan directories whose trunk DB has been deleted."]
+   [:p [:strong "Content addressing for free."]
+    " Files now carry " [:code ":file/blob-sha"]
+    " from " [:code "git ls-tree"] ". The "
+    [:a {:href "/concepts/pipeline/#analyze"} "analyze stage"]
+    " uses this for content-addressed promotion: when a file's blob has "
+    "been analyzed before with the current prompt + model, the prior "
+    "analysis is copied across instead of paying the LLM again."]
+
    [:h2 {:id "downstream"} "Same Graph, Regardless of Source"]
    [:p
     "Once the working tree is on disk, the rest of the pipeline (enrich, "

@@ -82,6 +82,20 @@
      " prompts, examples, and benchmark scores. No user code beyond the "
      "fixed benchmark question set."]]
 
+   [:h2 {:id "delta-locality"} "Branch Deltas Stay Local"]
+   [:p
+    [:em "Experimental — interfaces may change between releases."] " "
+    "When a developer is on a feature branch, Noumenon materializes a "
+    "sparse " [:em "delta database"] " under "
+    [:code "~/.noumenon/deltas/"]
+    " containing only the files that differ from the hosted trunk basis. "
+    "The delta lives on the developer's own machine, never on the shared "
+    "instance. Federated queries combine trunk + delta in a single HTTP "
+    "roundtrip on the local-mode daemon, so the working-branch view never "
+    "leaves the laptop. See "
+    [:a {:href "/concepts/source-control/#branches"} "Source control"]
+    " for the full picture."]
+
    [:h2 {:id "runtime-modes"} "Runtime Modes"]
    [:p
     [:code "NOUMENON_RUNTIME_MODE"] " controls how aggressively the daemon "

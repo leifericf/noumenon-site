@@ -9,17 +9,18 @@
     [["digest"     "Run the full pipeline (import, enrich, analyze, synthesize, embed) end-to-end."]
      ["import"     "Parse git history and file structure into Datomic. No LLM calls."]
      ["enrich"     "Resolve cross-file import and dependency edges. No LLM calls."]
-     ["analyze"    "Run LLM semantic analysis on repo files. The expensive stage."]
+     ["analyze"    "Run LLM semantic analysis on repo files. The expensive stage. Pass --no-promote to bypass the content-addressed cache."]
      ["synthesize" "Identify components and architectural layers from analyzed data."]
      ["embed"      "Build the TF-IDF vector index for semantic search."]
      ["update"     "Sync the knowledge graph with the latest git state. Incremental."]
      ["watch"      "Watch a repo and auto-update on new commits. Long-running."]
+     ["delta-ensure" "Materialize a local delta DB against a trunk basis SHA (experimental, branch-aware)."]
      ["reseed"     "Reload prompts, queries, and rules from disk."]]}
    {:heading "Query and Ask"
     :id "query-ask"
     :items
     [["ask"        "Ask a natural-language question. Iteratively queries the graph."]
-     ["query"      "Run a named or raw Datalog query."]
+     ["query"      "Run a named or raw Datalog query. Auto-federates against a local delta DB when on a feature branch (--no-auto-federate to disable)."]
      ["queries"    "List the named-query catalog."]
      ["schema"     "Show the database schema."]
      ["status"     "Entity counts for a repository."]
@@ -101,6 +102,30 @@
     [:li [:code "--lang clojure"] " — restrict to a single language."]]
    (code-block "bash" "noum analyze ./my-repo --include \"src/**/*.clj\" --exclude \"**/*_test.clj\"")
 
+   [:h2 {:id "branches"} "Branches and Federation"]
+   [:p
+    [:em "Experimental — interfaces may change between releases."] " "
+    "When the active connection is hosted and your local "
+    [:code "git rev-parse HEAD"]
+    " has diverged from the trunk DB's stored basis, "
+    [:code "noum query"]
+    " automatically materializes a sparse local delta DB at "
+    [:code "~/.noumenon/deltas/"]
+    " and routes the named query through "
+    [:code "/api/query-federated"]
+    ". A one-line yellow banner — "
+    [:code "Federating against local delta @<basis7>…"]
+    " — makes the rerouting observable. Disable per-call with "
+    [:code "--no-auto-federate"] " or persistently with "
+    [:code "noum settings federation/auto-route false"] "."]
+   [:p
+    "Explicit form (still works): "
+    [:code "noum query <name> <repo> --federate --basis-sha <sha>"]
+    ". Materialize the delta directly with "
+    [:code "noum delta-ensure <repo> --basis-sha <sha>"]
+    "; GC orphan deltas with " [:code "bb prune-deltas"]
+    " from the noumenon source tree."]
+
    [:h2 {:id "drift"} "Drift Handling"]
    [:p
     "When you change a prompt template or switch LLM models, prior analysis "
@@ -144,6 +169,7 @@
    [{:heading "On this page"
      :items [{:href "#interactive" :label "Interactive Mode"}
              {:href "#selectors"   :label "Pipeline Selectors"}
+             {:href "#branches"    :label "Branches and Federation"}
              {:href "#drift"       :label "Drift Handling"}]}
     {:heading "Commands"
      :items (for [{:keys [heading id items]} groups]

@@ -12,6 +12,7 @@
    ["Pipeline"        ["/api/import" "/api/enrich" "/api/analyze"
                        "/api/synthesize" "/api/update" "/api/digest"
                        "/api/reseed"]]
+   ["Branches"        ["/api/delta"]]
    ["Querying"        ["/api/ask" "/api/query" "/api/queries"
                        "/api/schema" "/api/status" "/api/search"]]
    ["Databases"       ["/api/databases"]]
