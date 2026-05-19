@@ -40,12 +40,10 @@
     [["setup"       "Configure MCP for Claude Desktop or Claude Code."]
      ["serve"       "Start the MCP server over stdin/stdout (for clients to spawn)."]
      ["open"        "Open the experimental Electron desktop UI. See /concepts/desktop-ui/."]]}
-   {:heading "LLM and Provider Config"
-    :id "providers"
+   {:heading "Configuration"
+    :id "config"
     :items
-    [["llm-providers" "List configured LLM providers and which is the default."]
-     ["llm-models"    "List available models per provider."]
-     ["settings"      "View or update settings."]]}
+    [["settings"      "View or update settings."]]}
    {:heading "Daemon and Connections"
     :id "daemon"
     :items

@@ -96,28 +96,31 @@
     [:a {:href "/concepts/source-control/#branches"} "Source control"]
     " for the full picture."]
 
-   [:h2 {:id "runtime-modes"} "Runtime Modes"]
+   [:h2 {:id "deployment-shapes"} "Deployment Shapes"]
    [:p
-    [:code "NOUMENON_RUNTIME_MODE"] " controls how aggressively the daemon "
-    "guards secrets. Two values:"]
+    "There is no runtime-mode toggle. The daemon's bind address is the "
+    "deployment signal:"]
    [:ul
     [:li
-     [:strong [:code "local"]]
-     " (default). Fine for laptop use. Provider credentials can fall back "
-     "to trusted on-disk locations (e.g. " [:code "~/.noumenon/credentials.edn"]
-     ") if a process env var isn't set, and provider base URLs can be HTTP."]
+     [:strong "Local (bind " [:code "127.0.0.1"] ", the default)."]
+     " Fine for laptop use. LLM credentials resolve from env vars first, "
+     "then fall back to " [:code "~/.noumenon/credentials"]
+     " — so " [:code "noum setup"] " is enough; you don't need to "
+     [:code "source"] " anything in your shell."]
     [:li
-     [:strong [:code "service"]]
-     ". The mode any shared deployment should run in. File-based credential "
-     "fallback is disabled — secrets must come from the process environment. "
-     "Provider base URLs are required to be HTTPS; HTTP URLs are rejected at "
-     "startup."]]
+     [:strong "Shared service (bind non-loopback, e.g. " [:code "0.0.0.0"] ")."]
+     " The daemon disables the file-credentials fallback at startup, so "
+     "LLM credentials must come from env vars on the host. A user's "
+     [:code "~/.noumenon/credentials"] " cannot leak into a multi-tenant "
+     "deployment. The daemon also warns if " [:code "NOUMENON_LLM_BASE_URL"]
+     " is " [:code "http://"] " — terminate TLS at a reverse proxy and "
+     "front the upstream call with " [:code "https://"] " in production. "
+     "Authentication of the client is unchanged (" [:code "NOUMENON_TOKEN"]
+     " and the Datomic-stored token table)."]]
    [:p
-    [:code "NOUMENON_LLM_BASE_URL_ALLOWLIST_EDN"] " is an optional EDN list "
-    "of permitted hostnames or simple patterns. When set, provider base "
-    "URLs whose host isn't on the list are rejected before any request "
-    "goes out. Defense in depth against a misconfigured provider entry "
-    "leaking traffic to an unintended host."]
+    "If you want multi-model flexibility, point " [:code "NOUMENON_LLM_BASE_URL"]
+    " at a router (OpenRouter, self-hosted LiteLLM, etc.) and let it handle "
+    "provider selection. Noumenon itself never routes."]
    [:p
     "See " [:a {:href "/server/"} "Run as a shared service"] " for how to "
     "wire these into a Docker deployment."]

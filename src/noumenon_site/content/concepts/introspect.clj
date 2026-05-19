@@ -4,7 +4,7 @@
             [noumenon-site.render :as r]))
 
 (def introspect-terminal-body
-  [[:span.prompt "$"] " noum introspect ./my-repo --max-iterations 5 --provider glm\n\n"
+  [[:span.prompt "$"] " noum introspect ./my-repo --max-iterations 5\n\n"
    [:span.comment "# baseline mean=52.3% (22 deterministic questions)"] "\n"
    [:span.comment "# === Iteration 1/5 ==="] "\n"
    [:span.comment "# target=system-prompt: \"Fix empty result handling\""] "\n"

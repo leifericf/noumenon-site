@@ -3,15 +3,20 @@
   (:require [hiccup2.core :as h]
             [noumenon-site.render :as r]))
 
-(def providers-snippet
-  "{:default-provider :glm
- :providers
- {:glm        {:base-url \"https://api.z.ai/api/paas/v4\"
-               :api-key  \"glm_...\"
-               :default-model \"glm-4-plus\"}
-  :claude-api {:base-url \"https://api.anthropic.com/v1\"
-               :api-key  \"sk-ant-...\"
-               :default-model \"sonnet\"}}}")
+(def env-snippet-anthropic
+  "export NOUMENON_LLM_BASE_URL=https://api.anthropic.com
+export NOUMENON_LLM_API_KEY=sk-ant-...
+export NOUMENON_LLM_MODEL=claude-sonnet-4-6-20250514")
+
+(def env-snippet-openrouter
+  "export NOUMENON_LLM_BASE_URL=https://openrouter.ai/api/v1
+export NOUMENON_LLM_API_KEY=sk-or-...
+export NOUMENON_LLM_MODEL=anthropic/claude-sonnet-4-5")
+
+(def env-snippet-litellm
+  "export NOUMENON_LLM_BASE_URL=http://localhost:4000
+export NOUMENON_LLM_API_KEY=sk-litellm-master-...
+export NOUMENON_LLM_MODEL=<the-name-defined-in-litellm-config.yaml>")
 
 (defn- code-block [lang body]
   [:pre [:code {:data-lang lang} body]])
@@ -64,17 +69,33 @@
     "For full server-mode deployments (shared graphs, role-based tokens), "
     "see " [:a {:href "/server/"} "Run as a shared service"] "."]
 
-   [:h2 {:id "llm-provider"} "Configure an LLM Provider"]
+   [:h2 {:id "llm-endpoint"} "Configure an LLM Endpoint"]
    [:p
     "Noumenon needs an LLM API key for the analyze, synthesize, and ask stages. "
     "Demo data works without one, but real repos do not."]
    [:p
-    "Configure providers via " [:code "NOUMENON_LLM_PROVIDERS_EDN"]
-    " (canonical) and select the default with " [:code "NOUMENON_DEFAULT_PROVIDER"] "."]
-   (code-block "clojure" providers-snippet)
+    "Point Noumenon at any endpoint that speaks the Anthropic Messages API: "
+    "Anthropic directly, a router like " [:a {:href "https://openrouter.ai"} "OpenRouter"]
+    " or self-hosted " [:a {:href "https://github.com/BerriAI/litellm"} "LiteLLM"]
+    ", or any compatible gateway. Three env vars, two of them required:"]
+   [:ul
+    [:li [:code "NOUMENON_LLM_BASE_URL"] " — endpoint URL (required)"]
+    [:li [:code "NOUMENON_LLM_API_KEY"] " — bearer/x-api-key value (required)"]
+    [:li [:code "NOUMENON_LLM_MODEL"] " — default model id, overridable per-call with "
+     [:code "--model"] " (optional)"]]
+   [:h3 {:id "endpoint-anthropic"} "Anthropic directly"]
+   (code-block "bash" env-snippet-anthropic)
+   [:h3 {:id "endpoint-openrouter"} "OpenRouter (multi-model routing)"]
+   (code-block "bash" env-snippet-openrouter)
+   [:h3 {:id "endpoint-litellm"} "LiteLLM (self-hosted proxy)"]
+   (code-block "bash" env-snippet-litellm)
    [:p
-    "Built-in providers: " [:code ":glm"] " (Z.ai) and " [:code ":claude-api"]
-    " (Anthropic). Discover available models with " [:code "noum llm-models"] "."]
+    "For local use, " [:code "noum setup"] " will prompt for these and write "
+    "them to " [:code "~/.noumenon/credentials"]
+    ". Noumenon reads that file directly — no shell sourcing needed."]
+   [:p
+    "Noumenon does not validate or alias the model id. Whatever you pass goes "
+    "verbatim to the upstream endpoint."]
 
    [:h2 {:id "interfaces"} "Other Ways to Drive It"]
    [:p

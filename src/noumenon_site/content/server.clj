@@ -79,10 +79,14 @@
     "are in the Webhook Setup section of the deploy guide below."]
 
    [:p
-    "Hardening tip: run with " [:code "NOUMENON_RUNTIME_MODE=service"]
-    " so provider credentials are env-only and provider base URLs are "
-    "required to be HTTPS. See "
-    [:a {:href "/concepts/data-safety/#runtime-modes"} "Runtime Modes"]
+    "Hardening note: when the daemon binds to anything other than "
+    [:code "127.0.0.1"] " it automatically disables the "
+    [:code "~/.noumenon/credentials"] " fallback, so LLM credentials must "
+    "come from env vars on the host. The daemon also warns at startup if "
+    [:code "NOUMENON_LLM_BASE_URL"] " is " [:code "http://"]
+    " — terminate TLS at a reverse proxy and front the upstream LLM call "
+    "with " [:code "https://"] " in production. See "
+    [:a {:href "/concepts/data-safety/#deployment-shapes"} "Deployment Shapes"]
     "."]
 
    [:h2 {:id "ops"} "Day-Two Operations"]

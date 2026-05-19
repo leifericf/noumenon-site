@@ -56,10 +56,6 @@
     [["noumenon_benchmark_run"      "Run benchmarks against the configured question set."]
      ["noumenon_benchmark_results"  "Get the latest run or look up by ID."]
      ["noumenon_benchmark_compare"  "Compare two runs by per-layer score deltas."]]}
-   {:section "Provider Config"
-    :items
-    [["noumenon_llm_providers" "List configured LLM providers and defaults."]
-     ["noumenon_llm_models"    "List available models per provider."]]}
    {:section "Admin"
     :items
     [["noumenon_artifact_history" "History of analyzed artifacts (prompt/model drift)."]]}])
